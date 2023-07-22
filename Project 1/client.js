@@ -14,7 +14,6 @@ const client = new todoPackage.Todo(
 
 client.createTodo(
   {
-    id: -1,
     text: text,
   },
   (err, response) => {

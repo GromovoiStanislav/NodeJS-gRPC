@@ -17,7 +17,7 @@ message TodoItem {
 }
 
 message TodoInput {
-    string text = 2;
+    string text = 1;
 }
 
 message TodoItems {
