@@ -1,0 +1,26 @@
+[
+  {
+    "Date": "01/01/2023",
+    "Price": 41321,
+    "Open": 46217.5,
+    "High": 47944.9,
+    "ChangePercentFromLastMonth": -10.6,
+    "Volume": "517.02K"
+  },
+  {
+    "Date": "02/01/2023",
+    "Price": 41321,
+    "Open": 46217.5,
+    "High": 47944.9,
+    "ChangePercentFromLastMonth": -10.6,
+    "Volume": "517.02K"
+  },
+  {
+    "Date": "03/01/2023",
+    "Price": 41321,
+    "Open": 46217.5,
+    "High": 47944.9,
+    "ChangePercentFromLastMonth": -10.6,
+    "Volume": "517.02K"
+  }
+]
