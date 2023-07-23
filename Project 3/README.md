@@ -7,11 +7,6 @@ It contains 4 different examples:
 4. Bidirectional Streaming
 
 
-## Project setup
-```
-nmp i
-```
-
 ### Runs the gRPC server
 ```
 nmp run server
