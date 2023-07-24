@@ -1,6 +1,6 @@
 # NodeJS gRPC
 
-Just a quick example of a gRPC server made with NodeJS<br>
+Just a quick example of a gRPC server made with with typescript and NodeJS<br>
 It contains 4 different examples:
 
 1. Unary

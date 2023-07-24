@@ -9,17 +9,17 @@ It contains 2 different examples:
 ### Runs the gRPC server
 
 ```
-nmp run server
+npm run server
 ```
 
 ### Runs client
 
 ```
-nmp run client
+npm run client
 ```
 
 ### Runs client express
 
 ```
-nmp run client-express
+npm run client-express
 ```
