@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+// Определение пакета (namespace) для вашего сервиса
+package your_service_package;
+
+// Определение сообщения (message) для запроса
+message HelloRequest {
+  string name = 1;
+}
+
+// Определение сообщения (message) для ответа
+message HelloResponse {
+  string message = 1;
+}
+
+// Определение сервиса (service) с методом "sayHello"
+service YourService {
+  rpc sayHello (HelloRequest) returns (HelloResponse);
+}
