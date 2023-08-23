@@ -35,16 +35,29 @@ function sayHelloStreamReply(call, callback) {
   call.end();
 }
 
-const names = [];
 function streamSayHelloReply(call, callback) {
+  const names = [];
+
   call.on('data', (chunk) => {
     names.push(chunk);
   });
 
   call.on('end', () => {
     const messages = names.map((name) => ({ message: 'Hello ' + name.name }));
-    names.length = 0;
     callback(null, { messages: messages });
+  });
+}
+
+function streamSayHelloStreamReply(call, callback) {
+  const names = [];
+
+  call.on('data', (chunk) => {
+    names.push(chunk);
+  });
+
+  call.on('end', () => {
+    names.forEach((name) => call.write({ message: 'Hello ' + name.name }));
+    call.end();
   });
 }
 
@@ -60,6 +73,7 @@ function main() {
     sayHelloMany: sayHelloMany,
     sayHelloStreamReply: sayHelloStreamReply,
     streamSayHelloReply: streamSayHelloReply,
+    streamSayHelloStreamReply: streamSayHelloStreamReply,
   });
   server.bindAsync(
     '0.0.0.0:50051',

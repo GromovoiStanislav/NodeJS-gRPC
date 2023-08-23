@@ -74,11 +74,25 @@ function main() {
     }
     console.log('Greetings:', result.messages);
   });
-  stream2.write({ name: 'Name1' });
-  stream2.write({ name: 'Name2' });
-  stream2.write({ name: 'Name3' });
-  stream2.write({ name: 'Name4' });
+  stream2.write({ name: 'Name_1' });
+  stream2.write({ name: 'Name_2' });
+  stream2.write({ name: 'Name_3' });
+  stream2.write({ name: 'Name_4' });
   stream2.end();
+
+  /////////////////////////////////////////////////////
+  const stream3 = client.streamSayHelloStreamReply();
+  stream3.on('data', (chunk) => {
+    console.log(chunk);
+  });
+  stream3.on('end', () => {
+    console.log('communication ended');
+  });
+  stream3.write({ name: 'Name 1' });
+  stream3.write({ name: 'Name 2' });
+  stream3.write({ name: 'Name 3' });
+  stream3.write({ name: 'Name 4' });
+  stream3.end();
 }
 
 main();
