@@ -34,14 +34,18 @@ function main() {
   } else {
     user = 'world';
   }
+
+  ////////////////////////////////
   client.sayHello({ name: user }, function (err, response) {
     console.log('Greeting:', response.message);
   });
 
+  //////////////////////////////////
   client.sayHelloAgain({ name: user }, function (err, response) {
     console.log('Greeting:', response.message);
   });
 
+  ///////////////////////////////////
   client.sayHelloMany(
     {
       names: [{ name: 'Stas' }, { name: 'Tom' }, { name: 'Sam' }],
@@ -51,6 +55,7 @@ function main() {
     }
   );
 
+  ///////////////////////////////////
   const stream1 = client.sayHelloStreamReply({
     names: [{ name: 'Stas' }, { name: 'Tom' }, { name: 'Sam' }],
   });
@@ -60,6 +65,20 @@ function main() {
   stream1.on('end', () => {
     console.log('communication ended');
   });
+
+  ////////////////////////////////////
+  const stream2 = client.streamSayHelloReply((err, result) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log('Greetings:', result.messages);
+  });
+  stream2.write({ name: 'Name1' });
+  stream2.write({ name: 'Name2' });
+  stream2.write({ name: 'Name3' });
+  stream2.write({ name: 'Name4' });
+  stream2.end();
 }
 
 main();

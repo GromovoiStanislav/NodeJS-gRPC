@@ -35,6 +35,19 @@ function sayHelloStreamReply(call, callback) {
   call.end();
 }
 
+const names = [];
+function streamSayHelloReply(call, callback) {
+  call.on('data', (chunk) => {
+    names.push(chunk);
+  });
+
+  call.on('end', () => {
+    const messages = names.map((name) => ({ message: 'Hello ' + name.name }));
+    names.length = 0;
+    callback(null, { messages: messages });
+  });
+}
+
 /**
  * Starts an RPC server that receives requests for the Greeter service at the
  * sample server port
@@ -46,6 +59,7 @@ function main() {
     sayHelloAgain: sayHelloAgain,
     sayHelloMany: sayHelloMany,
     sayHelloStreamReply: sayHelloStreamReply,
+    streamSayHelloReply: streamSayHelloReply,
   });
   server.bindAsync(
     '0.0.0.0:50051',
