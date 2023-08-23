@@ -1,16 +1,16 @@
-var grpc = require('@grpc/grpc-js');
-var protoLoader = require('@grpc/proto-loader');
+const grpc = require('@grpc/grpc-js');
+const protoLoader = require('@grpc/proto-loader');
 
-var PROTO_PATH = __dirname + '/helloworld.proto';
+const PROTO_PATH = __dirname + '/helloworld.proto';
 
-var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
   longs: String,
   enums: String,
   defaults: true,
   oneofs: true,
 });
-var hello_proto = grpc.loadPackageDefinition(packageDefinition).helloworld;
+const hello_proto = grpc.loadPackageDefinition(packageDefinition).helloworld;
 
 /**
  * Implements the SayHello RPC method.
@@ -21,6 +21,12 @@ function sayHello(call, callback) {
 
 function sayHelloAgain(call, callback) {
   callback(null, { message: 'Hello again, ' + call.request.name });
+}
+
+function sayHelloMany(call, callback) {
+  const { names } = call.request;
+  const messages = names.map((name) => ({ message: 'Hello ' + name.name }));
+  callback(null, { messages: messages });
 }
 
 function sayHelloStreamReply(call, callback) {
@@ -34,10 +40,11 @@ function sayHelloStreamReply(call, callback) {
  * sample server port
  */
 function main() {
-  var server = new grpc.Server();
+  const server = new grpc.Server();
   server.addService(hello_proto.Greeter.service, {
     sayHello: sayHello,
     sayHelloAgain: sayHelloAgain,
+    sayHelloMany: sayHelloMany,
     sayHelloStreamReply: sayHelloStreamReply,
   });
   server.bindAsync(

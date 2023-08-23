@@ -1,10 +1,10 @@
-var grpc = require('@grpc/grpc-js');
-var protoLoader = require('@grpc/proto-loader');
+const grpc = require('@grpc/grpc-js');
+const protoLoader = require('@grpc/proto-loader');
 const parseArgs = require('minimist');
 
-var PROTO_PATH = __dirname + '/helloworld.proto';
+const PROTO_PATH = __dirname + '/helloworld.proto';
 
-var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
   longs: String,
   enums: String,
@@ -12,23 +12,23 @@ var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true,
 });
 
-var hello_proto = grpc.loadPackageDefinition(packageDefinition).helloworld;
+const hello_proto = grpc.loadPackageDefinition(packageDefinition).helloworld;
 
 function main() {
-  var argv = parseArgs(process.argv.slice(2), {
+  const argv = parseArgs(process.argv.slice(2), {
     string: 'target',
   });
-  var target;
+  let target;
   if (argv.target) {
     target = argv.target;
   } else {
     target = 'localhost:50051';
   }
-  var client = new hello_proto.Greeter(
+  const client = new hello_proto.Greeter(
     target,
     grpc.credentials.createInsecure()
   );
-  var user;
+  let user;
   if (argv._.length > 0) {
     user = argv._[0];
   } else {
@@ -41,6 +41,15 @@ function main() {
   client.sayHelloAgain({ name: user }, function (err, response) {
     console.log('Greeting:', response.message);
   });
+
+  client.sayHelloMany(
+    {
+      names: [{ name: 'Stas' }, { name: 'Tom' }, { name: 'Sam' }],
+    },
+    function (err, response) {
+      console.log('Greetings:', response.messages);
+    }
+  );
 
   const stream1 = client.sayHelloStreamReply({
     names: [{ name: 'Stas' }, { name: 'Tom' }, { name: 'Sam' }],

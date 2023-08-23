@@ -12,6 +12,8 @@ service Greeter {
   // Sends another greeting
   rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
 
+  rpc SayHelloMany (HelloRequestMany) returns (HelloReplyMany) {}
+
   rpc SayHelloStreamReply (HelloRequestMany) returns (stream HelloReply) {}
 }
 
@@ -29,4 +31,8 @@ message HelloRequestMany {
 // The response message containing the greetings
 message HelloReply {
   string message = 1;
+}
+
+message HelloReplyMany {
+  repeated HelloReply messages = 1;
 }
