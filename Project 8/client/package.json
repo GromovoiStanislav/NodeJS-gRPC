@@ -1,0 +1,13 @@
+{
+  "name": "grpc",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.8.18",
+    "@grpc/proto-loader": "^0.7.8"
+  }
+}
