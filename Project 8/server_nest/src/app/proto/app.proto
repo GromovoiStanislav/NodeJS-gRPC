@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package task;
+
+service TaskService {
+  rpc GenerateHash (GenerateHashRequest) returns (GenerateHashResponse) {}
+}
+
+message GenerateHashRequest {
+  int32 id = 1;
+  string data = 2;
+}
+
+message GenerateHashResponse {
+  int32 id = 1;
+  string hash = 2;
+}
