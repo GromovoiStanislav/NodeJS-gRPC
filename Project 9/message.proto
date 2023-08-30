@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package pusher_service_package;
+
+service PusherService {
+  rpc SendMessage(PusherMessage) returns (EmptyResponse);
+}
+
+message PusherMessage {
+  string message = 1;
+}
+
+message EmptyResponse {}
