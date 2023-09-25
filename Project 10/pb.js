@@ -52,4 +52,12 @@ const pbjs = require('pbjs');
     bufferFromUint8Array2.writeUInt8(value, index);
   });
   console.log(bufferFromUint8Array2);
+
+  console.log(schema.decodeMyData(bufferFromUint8Array2)); // { name: 'John', age: 30 }
+
+  console.log(
+    schema.decodeMyData(
+      Buffer.from([0x0a, 0x04, 0x4a, 0x6f, 0x68, 0x6e, 0x10, 0x1e])
+    )
+  ); // { name: 'John', age: 30 }
 }

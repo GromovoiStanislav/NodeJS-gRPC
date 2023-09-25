@@ -26,3 +26,6 @@ console.log(decodedData); // MyData { name: 'John', age: 30 }
 
 const uint8Array = new Uint8Array(buffer);
 console.log(uint8Array); // Uint8Array(8) [10, 4, 74, 111, 104, 110, 16, 30]
+
+console.log(MyData.decode(uint8Array)); //MyData { name: 'John', age: 30 }
+console.log(MyData.decode(new Uint8Array([10, 4, 74, 111, 104, 110, 16, 30]))); //MyData { name: 'John', age: 30 }
