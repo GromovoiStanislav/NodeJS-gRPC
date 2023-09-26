@@ -1,0 +1,15 @@
+{
+  "name": "protobuf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "generate-grpc": "protoc --js_out=import_style=commonjs,binary:. ./protos/dummy.proto"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "protoc-gen-js": "^3.21.2"
+  }
+}
