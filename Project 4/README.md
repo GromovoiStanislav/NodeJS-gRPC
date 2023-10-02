@@ -1,4 +1,4 @@
-## NodeJS gRPC (TS)
+## NodeJS + gRPC with metadata (TS)
 
 Just a quick example of a gRPC server made with with typescript and NodeJS<br>
 It contains 4 different examples:
