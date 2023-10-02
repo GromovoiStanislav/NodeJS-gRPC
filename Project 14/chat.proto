@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package chat_service_package;
+
+service ChatService {
+  rpc SendMessage (ChatMessage) returns (Empty);
+  rpc ReceiveMessage (Empty) returns (stream ChatMessage);
+}
+
+message ChatMessage {
+  string username = 1;
+  string message = 2;
+}
+
+message Empty {}
