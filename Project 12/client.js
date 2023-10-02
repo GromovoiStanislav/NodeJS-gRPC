@@ -25,10 +25,7 @@ const client = new files_service_package.FilesService(
   grpc.credentials.createInsecure()
 );
 
-
-
 const upload = () => {
-
   const fileStream = client.UploadFile((error, response) => {
     if (error) {
       console.error(error);
@@ -40,14 +37,12 @@ const upload = () => {
   // Открываем файл для чтения
   const filePath = 'cat.jpg';
 
-  
   const fileInfo = path.parse(filePath);
   const file_name = fileInfo.name; // Имя файла
   const file_extension = fileInfo.ext.slice(1); // Расширение файла без точки (убираем первый символ)
 
-
   const fileReadStream = fs.createReadStream(filePath);
-  
+
   fileReadStream.on('data', (chunk) => {
     // Отправляем каждую часть файла вместе с именем и расширением
     fileStream.write({ file_name, file_extension, data: chunk });
@@ -61,9 +56,7 @@ const upload = () => {
   fileReadStream.on('error', (error) => {
     console.error('Error reading file:', error);
   });
-
-}
-
+};
 
 const download = () => {
   // Имя файла, который вы хотите скачать
@@ -74,10 +67,9 @@ const download = () => {
 
   const fileStream = fs.createWriteStream(downloadPath);
 
-
   // Отправляем запрос на скачивание файла
   const downloadCall = client.DownloadFile({
-    file_name: fileToDownload
+    file_name: fileToDownload,
   });
 
   downloadCall.on('data', (chunk) => {

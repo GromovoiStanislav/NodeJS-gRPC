@@ -3,8 +3,6 @@ const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 const fs = require('fs');
 
-
-
 // Загрузка protobuf
 const packageDefinition = protoLoader.loadSync(
   path.resolve(__dirname, 'files.proto'),
@@ -21,14 +19,10 @@ const packageDefinition = protoLoader.loadSync(
 // Загрузка gRPC пакета определения
 const { files_service_package } = grpc.loadPackageDefinition(packageDefinition);
 
-
-
 // Реализация методов сервера
 const server = new grpc.Server();
 server.addService(files_service_package.FilesService.service, {
-  
   UploadFile: (call, callback) => {
-
     let fileStream;
     let fileName;
     let fileExtension;
@@ -38,13 +32,14 @@ server.addService(files_service_package.FilesService.service, {
       fs.mkdirSync(uploadsFolder);
     }
 
-    
     call.on('data', (chunk) => {
       // Первая часть данных содержит имя файла и расширение
       if (!fileStream) {
         fileName = chunk.file_name;
         fileExtension = chunk.file_extension;
-        fileStream = fs.createWriteStream(`${uploadsFolder}/${fileName}.${fileExtension}`);
+        fileStream = fs.createWriteStream(
+          `${uploadsFolder}/${fileName}.${fileExtension}`
+        );
       }
 
       // Получаем и записываем части файла
@@ -89,10 +84,7 @@ server.addService(files_service_package.FilesService.service, {
       call.emit('error', error);
     }
   },
-
 });
-
-
 
 // Запуск сервера
 const PORT = '50051';
