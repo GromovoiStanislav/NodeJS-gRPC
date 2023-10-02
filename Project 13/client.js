@@ -48,7 +48,7 @@ const signIn = () => {
       console.log(response.code, response.details);
     } else {
       console.log('Logged in successfully!');
-      console.log('JWT token:', response.details);
+      console.log('JWT tokens:', response.details);
       access_token = response.details.access_token;
       refresh_token = response.details.refresh_token;
     }
@@ -70,7 +70,24 @@ const getMe = () => {
       console.log(response.code, response.details);
     } else {
       console.log('username:', response.details);
-      JWT = response.jwt;
+    }
+  });
+};
+
+const refresh = () => {
+  client.RefreshToken({ refresh_token }, (err, response) => {
+    if (err) {
+      console.log(err);
+      return;
+    }
+
+    if (response.code !== 'OK') {
+      console.log(response.code, response.details);
+    } else {
+      console.log('Refresh in successfully!');
+      console.log('JWT tokens:', response.details);
+      access_token = response.details.access_token;
+      refresh_token = response.details.refresh_token;
     }
   });
 };
@@ -79,3 +96,4 @@ const getMe = () => {
 signUp();
 setTimeout(signIn, 1000);
 setTimeout(getMe, 2000);
+setTimeout(refresh, 3000);

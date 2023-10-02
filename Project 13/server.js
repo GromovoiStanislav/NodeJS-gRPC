@@ -22,6 +22,7 @@ const { auth_service_package } = grpc.loadPackageDefinition(packageDefinition);
 // Массив для хранения пользователей (для упрощения)
 const users = [];
 const secretKey = 'secret-key';
+const refreshSecretKey = 'refresh-secret-key';
 
 // Реализация методов сервера
 const server = new grpc.Server();
@@ -66,7 +67,7 @@ server.addService(auth_service_package.AuthService.service, {
 
     // Генерация JWT для успешной аутентификации
     const access_token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
-    const refresh_token = jwt.sign({ username }, secretKey, {
+    const refresh_token = jwt.sign({ username }, refreshSecretKey, {
       expiresIn: '1d',
     });
 
@@ -78,7 +79,36 @@ server.addService(auth_service_package.AuthService.service, {
 
   GetMe: (call, callback) => {
     authenticateJWT(call, callback, () => {
-      callback(null, { code: 'OK', details: call.user });
+      callback(null, { code: 'OK', details: call.username });
+    });
+  },
+
+  RefreshToken: (call, callback) => {
+    const { refresh_token } = call.request;
+
+    jwt.verify(refresh_token, refreshSecretKey, (error, user) => {
+      if (error) {
+        const error = {
+          code: grpc.status.UNAUTHENTICATED,
+          details: 'Unauthorized',
+        };
+        return callback(null, error);
+      }
+
+      const { username } = user.username;
+
+      // Генерация JWT для успешной аутентификации
+      const access_token = jwt.sign({ username }, secretKey, {
+        expiresIn: '1h',
+      });
+      const refresh_token = jwt.sign({ username }, refreshSecretKey, {
+        expiresIn: '1d',
+      });
+
+      callback(null, {
+        code: 'OK',
+        details: { access_token, refresh_token },
+      });
     });
   },
 });
@@ -104,7 +134,7 @@ function authenticateJWT(call, callback, next) {
       return callback(null, error);
     }
 
-    call.user = user.username; // Сохраняем информацию о пользователе (полезная нагрузка из JWT)
+    call.username = user.username; // Сохраняем информацию о пользователе (полезная нагрузка из JWT)
     next();
   });
 }

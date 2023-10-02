@@ -6,6 +6,7 @@ service AuthService {
   rpc SignUp (RegisterRequest) returns (RegisterResponse);
   rpc SignIn (LoginRequest) returns (LoginResponse);
   rpc GetMe (Empty) returns (UserResponse);
+  rpc RefreshToken (RefreshRequest) returns (LoginResponse);
 }
 
 
@@ -39,4 +40,8 @@ message Empty {}
 message UserResponse {
   string code = 1;
   string details = 2;
+}
+
+message RefreshRequest {
+  string refresh_token = 1;
 }
