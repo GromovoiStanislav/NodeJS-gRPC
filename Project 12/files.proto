@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package files_service_package;
+
+service FilesService {
+  rpc UploadFile(stream FileChunkWithName) returns (UploadFileResponse);
+  rpc DownloadFile(DownloadFileRequest) returns (stream FileChunk);
+}
+
+message FileChunkWithName {
+  string file_name = 1;
+  string file_extension = 2;
+  bytes data = 3;
+}
+
+message FileChunk {
+  bytes data = 1;
+}
+
+message UploadFileResponse {
+  string message = 1;
+}
+
+message DownloadFileRequest {
+  string file_name = 1;
+}
