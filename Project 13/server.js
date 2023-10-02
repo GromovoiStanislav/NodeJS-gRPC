@@ -65,11 +65,14 @@ server.addService(auth_service_package.AuthService.service, {
     }
 
     // Генерация JWT для успешной аутентификации
-    const jwtToken = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
+    const access_token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
+    const refresh_token = jwt.sign({ username }, secretKey, {
+      expiresIn: '1d',
+    });
 
     callback(null, {
       code: 'OK',
-      details: jwtToken,
+      details: { access_token, refresh_token },
     });
   },
 

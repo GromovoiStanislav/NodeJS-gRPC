@@ -34,7 +34,8 @@ const signUp = () => {
   });
 };
 
-let JWT = '';
+let access_token = '';
+let refresh_token = '';
 
 const signIn = () => {
   client.SignIn({ username: 'Tom', password: '123' }, (err, response) => {
@@ -48,7 +49,8 @@ const signIn = () => {
     } else {
       console.log('Logged in successfully!');
       console.log('JWT token:', response.details);
-      JWT = response.details;
+      access_token = response.details.access_token;
+      refresh_token = response.details.refresh_token;
     }
   });
 };
@@ -56,7 +58,7 @@ const signIn = () => {
 const getMe = () => {
   // Создаем метаданные с JWT токеном
   const metadata = new grpc.Metadata();
-  metadata.add('authorization', `Bearer ${JWT}`);
+  metadata.add('authorization', `Bearer ${access_token}`);
 
   client.GetMe({}, metadata, (err, response) => {
     if (err) {
