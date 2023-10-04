@@ -33,7 +33,7 @@ server.addService(auth_service_package.AuthService.service, {
     // Проверка, что пользователь с таким именем не существует
     if (users.find((user) => user.username === username)) {
       callback(null, {
-        code: 'ALREADY_EXISTS',
+        code: grpc.status.ALREADY_EXISTS,
         details: 'User with this username already exists',
       });
       return;
@@ -44,7 +44,7 @@ server.addService(auth_service_package.AuthService.service, {
     users.push(newUser);
 
     callback(null, {
-      code: 'OK',
+      code: grpc.status.OK,
       details: 'User registered successfully',
     });
   },
@@ -59,7 +59,7 @@ server.addService(auth_service_package.AuthService.service, {
 
     if (!user) {
       callback(null, {
-        code: 'NOT_FOUND',
+        code: grpc.status.NOT_FOUND,
         details: 'User not found or incorrect credentials',
       });
       return;
@@ -72,14 +72,14 @@ server.addService(auth_service_package.AuthService.service, {
     });
 
     callback(null, {
-      code: 'OK',
+      code: grpc.status.OK,
       details: { access_token, refresh_token },
     });
   },
 
   GetMe: (call, callback) => {
     authenticateJWT(call, callback, () => {
-      callback(null, { code: 'OK', details: call.username });
+      callback(null, { code: grpc.status.OK, details: call.username });
     });
   },
 
@@ -106,7 +106,7 @@ server.addService(auth_service_package.AuthService.service, {
       });
 
       callback(null, {
-        code: 'OK',
+        code: grpc.status.OK,
         details: { access_token, refresh_token },
       });
     });

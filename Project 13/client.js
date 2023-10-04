@@ -44,7 +44,7 @@ const signIn = () => {
       return;
     }
 
-    if (response.code !== 'OK') {
+    if (response.code !== grpc.status.OK) {
       console.log(response.code, response.details);
     } else {
       console.log('Logged in successfully!');
@@ -66,7 +66,7 @@ const getMe = () => {
       return;
     }
 
-    if (response.code !== 'OK') {
+    if (response.code !== grpc.status.OK) {
       console.log(response.code, response.details);
     } else {
       console.log('username:', response.details);
@@ -81,7 +81,7 @@ const refresh = () => {
       return;
     }
 
-    if (response.code !== 'OK') {
+    if (response.code !== grpc.status.OK) {
       console.log(response.code, response.details);
     } else {
       console.log('Refresh in successfully!');
