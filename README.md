@@ -9,3 +9,4 @@
 - 12 - Files transfer with gRCP (JS)
 - 13 - Auth service with gRCP (JS)
 - 14 - Realtime Chat with gRCP (JS)
+- 15 - gRPC backend for chat (JS)
