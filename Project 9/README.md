@@ -3,4 +3,5 @@
 ```
 npm run start:consumer
 npm run start:producer
+npm run start:stream
 ```

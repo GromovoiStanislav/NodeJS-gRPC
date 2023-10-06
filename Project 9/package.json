@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "start:consumer": "node consumer",
-    "start:producer": "node producer"
+    "start:producer": "node producer",
+    "start:stream": "node producer-stream"
   },
   "keywords": [],
   "author": "",

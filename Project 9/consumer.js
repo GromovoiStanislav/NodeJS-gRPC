@@ -30,6 +30,17 @@ server.addService(pusher_service_package.PusherService.service, {
     console.log('Message received:', message);
     //callback(null, {});
   },
+
+  SendMessageStream: (call, callback) => {
+    call.on('data', (chunk) => {
+      const message = chunk.message;
+      console.log('Message received:', message);
+    });
+
+    call.on('end', () => {
+      //callback(null, {});
+    });
+  },
 });
 
 // Запуск сервера
