@@ -59,7 +59,6 @@ server.addService(auth_service_package.AuthRpc.service, {
     }
 
     /// Создание нового пользователя
-
     try {
       const newUser = await usersService.createUser({
         username,
@@ -67,8 +66,9 @@ server.addService(auth_service_package.AuthRpc.service, {
         password: await utils.hashPassword(password),
       });
 
+      /// Генерация токенов
       callback(null, utils.createTokens(newUser.id));
-    } catch (err) {
+    } catch {
       const error = new Error('Internal error');
       error.code = grpc.status.INTERNAL;
       callback(error);
@@ -77,7 +77,7 @@ server.addService(auth_service_package.AuthRpc.service, {
   },
 
   SignIn: async (call, callback) => {
-    const { username, email, password } = call.request;
+    const { email, password } = call.request;
 
     /// Проверка на пустые поля
     if (!email) {
@@ -105,11 +105,82 @@ server.addService(auth_service_package.AuthRpc.service, {
     /// Проверка пароля
     try {
       if (await utils.verifyPassword(user.password, password)) {
+        /// Генерация токенов
         callback(null, utils.createTokens(user.id));
       } else {
         throw new Error();
       }
-    } catch (err) {
+    } catch {
+      const error = new Error('Unauthenticated');
+      error.code = grpc.status.UNAUTHENTICATED;
+      callback(error);
+      return;
+    }
+  },
+
+  RefreshToken: async (call, callback) => {
+    const { refresh_token } = call.request;
+
+    /// Проверка на пустые поля
+    if (!refresh_token) {
+      const error = new Error('Refresh token not found');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+
+    try {
+      const user_id = utils.verifyToken(refresh_token, true).user_id;
+
+      /// Проверка, что пользователь существует
+      const user = await usersService.getUserByID(user_id);
+      if (!user) {
+        const error = new Error('User not found');
+        error.code = grpc.status.NOT_FOUND;
+        callback(error);
+        return;
+      }
+
+      /// Генерация токенов
+      callback(null, utils.createTokens(user.id));
+    } catch {
+      const error = new Error('Unauthenticated');
+      error.code = grpc.status.UNAUTHENTICATED;
+      callback(error);
+      return;
+    }
+  },
+
+  FetchUser: async (call, callback) => {
+    const access_token = call.metadata.get('access_token')[0] ?? '';
+
+    /// Проверка на пустые поля
+    if (!access_token) {
+      const error = new Error('Access token not found');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+
+    try {
+      const user_id = utils.verifyToken(access_token).user_id;
+
+      /// Проверка, что пользователь существует
+      const user = await usersService.getUserByID(user_id);
+      if (!user) {
+        const error = new Error('User not found');
+        error.code = grpc.status.NOT_FOUND;
+        callback(error);
+        return;
+      }
+
+      /// Ответ
+      callback(null, {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      });
+    } catch {
       const error = new Error('Unauthenticated');
       error.code = grpc.status.UNAUTHENTICATED;
       callback(error);

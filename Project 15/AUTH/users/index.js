@@ -27,7 +27,16 @@ const findUser = async (identifier) => {
   });
 };
 
+const getUserByID = async (id) => {
+  return prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+};
+
 export default {
   createUser,
   findUser,
+  getUserByID,
 };

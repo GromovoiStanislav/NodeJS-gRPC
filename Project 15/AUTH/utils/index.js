@@ -25,6 +25,15 @@ const createTokens = (id) => {
   };
 };
 
+const verifyToken = (token, isRefreshToken = false) => {
+  return jwt.verify(
+    token,
+    isRefreshToken
+      ? process.env.REFRESH_SECRET_KEY
+      : process.env.ACCESS_SECRET_KEY
+  );
+};
+
 const encryptEmail = (email) => {
   const encryptionKey = Buffer.from(process.env.SECRET_KEY, 'base64');
   const iv = Buffer.from(process.env.SECRET_IV, 'base64');
@@ -47,6 +56,7 @@ export default {
   hashPassword,
   verifyPassword,
   createTokens,
+  verifyToken,
   encryptEmail,
   decryptEmail,
 };
