@@ -6,12 +6,23 @@ const hashPassword = async (password) => {
   return argon2.hash(String(password));
 };
 
+const verifyPassword = async (hash, password) => {
+  return argon2.verify(hash, String(password));
+};
+
 const createAccessToken = (id) => {
   return jwt.sign({ user_id: id }, process.env.ACCESS_SECRET_KEY);
 };
 
 const createRefreshToken = (id) => {
   return jwt.sign({ user_id: id }, process.env.REFRESH_SECRET_KEY);
+};
+
+const createTokens = (id) => {
+  return {
+    access_token: createAccessToken(id),
+    refresh_token: createRefreshToken(id),
+  };
 };
 
 const encryptEmail = (email) => {
@@ -34,8 +45,8 @@ const decryptEmail = (encryptedEmail) => {
 
 export default {
   hashPassword,
-  createAccessToken,
-  createRefreshToken,
+  verifyPassword,
+  createTokens,
   encryptEmail,
   decryptEmail,
 };

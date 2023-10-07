@@ -53,22 +53,68 @@ server.addService(auth_service_package.AuthRpc.service, {
     /// Проверка, что пользователь с таким именем не существует
     if (await usersService.findUser(username)) {
       const error = new Error('User already exists');
-      error.code = grpc.status.INVALID_ARGUMENT;
+      error.code = grpc.status.ALREADY_EXISTS;
       callback(error);
       return;
     }
 
     /// Создание нового пользователя
-    const newUser = await usersService.createUser({
-      username,
-      email: utils.encryptEmail(email),
-      password: await utils.hashPassword(password),
-    });
 
-    callback(null, {
-      access_token: utils.createAccessToken(newUser.id),
-      refresh_token: utils.createRefreshToken(newUser.id),
-    });
+    try {
+      const newUser = await usersService.createUser({
+        username,
+        email: utils.encryptEmail(email),
+        password: await utils.hashPassword(password),
+      });
+
+      callback(null, utils.createTokens(newUser.id));
+    } catch (err) {
+      const error = new Error('Internal error');
+      error.code = grpc.status.INTERNAL;
+      callback(error);
+      return;
+    }
+  },
+
+  SignIn: async (call, callback) => {
+    const { username, email, password } = call.request;
+
+    /// Проверка на пустые поля
+    if (!email) {
+      const error = new Error('Email not found');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+    if (!password) {
+      const error = new Error('Password not found');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+
+    /// Проверка, что пользователь существует
+    const user = await usersService.findUser(utils.encryptEmail(email));
+    if (!user) {
+      const error = new Error('User not found');
+      error.code = grpc.status.NOT_FOUND;
+      callback(error);
+      return;
+    }
+
+    /// Проверка пароля
+    try {
+      if (await utils.verifyPassword(user.password, password)) {
+        callback(null, utils.createTokens(user.id));
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      const error = new Error('Unauthenticated');
+      error.code = grpc.status.UNAUTHENTICATED;
+      callback(error);
+      return;
+    }
   },
 });
 
