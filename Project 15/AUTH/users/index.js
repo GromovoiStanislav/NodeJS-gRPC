@@ -12,6 +12,15 @@ const createUser = async ({ username, email, password }) => {
   });
 };
 
+const updateUser = async (id, data) => {
+  return prisma.user.update({
+    where: {
+      id,
+    },
+    data,
+  });
+};
+
 const findUser = async (identifier) => {
   return prisma.user.findFirst({
     where: {
@@ -35,8 +44,18 @@ const getUserByID = async (id) => {
   });
 };
 
+const deleteUserByID = async (id) => {
+  return prisma.user.delete({
+    where: {
+      id,
+    },
+  });
+};
+
 export default {
   createUser,
   findUser,
   getUserByID,
+  deleteUserByID,
+  updateUser,
 };

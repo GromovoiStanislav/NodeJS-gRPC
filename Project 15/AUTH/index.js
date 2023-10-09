@@ -24,9 +24,9 @@ const packageDefinition = protoLoader.loadSync(
 // Загрузка gRPC пакета определения
 const { auth_service_package } = grpc.loadPackageDefinition(packageDefinition);
 
-// Реализация методов сервера
 const server = new grpc.Server();
 server.addService(auth_service_package.AuthRpc.service, {
+  // Реализация методов сервера
   SignUp: async (call, callback) => {
     const { username, email, password } = call.request;
 
@@ -180,6 +180,87 @@ server.addService(auth_service_package.AuthRpc.service, {
         username: user.username,
         email: utils.decryptEmail(user.email),
       });
+    } catch {
+      const error = new Error('Unauthenticated');
+      error.code = grpc.status.UNAUTHENTICATED;
+      callback(error);
+      return;
+    }
+  },
+
+  UpdateUser: async (call, callback) => {
+    const access_token = call.metadata.get('access_token')[0] ?? '';
+
+    /// Проверка на пустые поля
+    if (!access_token) {
+      const error = new Error('Access token not found');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+
+    try {
+      const user_id = utils.verifyToken(access_token).user_id;
+
+      /// Собираем данные для обновления
+      const { username, email, password } = call.request;
+
+      const data = {};
+
+      if (username) {
+        data.username = username;
+      }
+      if (email) {
+        data.email = utils.encryptEmail(email);
+      }
+      if (password) {
+        data.password = await utils.hashPassword(password);
+      }
+
+      const user = await usersService.updateUser(user_id, data);
+
+      /// Ответ
+      callback(null, {
+        id: user.id,
+        username: user.username,
+        email: utils.decryptEmail(user.email),
+      });
+    } catch {
+      const error = new Error('Unauthenticated');
+      error.code = grpc.status.UNAUTHENTICATED;
+      callback(error);
+      return;
+    }
+  },
+
+  DeleteUser: async (call, callback) => {
+    const access_token = call.metadata.get('access_token')[0] ?? '';
+
+    /// Проверка на пустые поля
+    if (!access_token) {
+      const error = new Error('Access token not found');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+
+    try {
+      const user_id = utils.verifyToken(access_token).user_id;
+
+      try {
+        /// Удалим пользователя
+        await usersService.deleteUserByID(user_id);
+
+        /// Ответ
+        callback(null, {
+          message: 'Deleted',
+        });
+      } catch {
+        const error = new Error('User not found');
+        error.code = grpc.status.NOT_FOUND;
+        callback(error);
+        return;
+      }
     } catch {
       const error = new Error('Unauthenticated');
       error.code = grpc.status.UNAUTHENTICATED;
