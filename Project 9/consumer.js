@@ -35,6 +35,8 @@ server.addService(pusher_service_package.PusherService.service, {
     call.on('data', (chunk) => {
       const message = chunk.message;
       console.log('Message received:', message);
+
+      call.write({ status: 'OK' });
     });
 
     call.on('end', () => {

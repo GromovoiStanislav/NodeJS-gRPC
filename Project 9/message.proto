@@ -4,7 +4,7 @@ package pusher_service_package;
 
 service PusherService {
   rpc SendMessage(PusherMessage) returns (EmptyResponse);
-  rpc SendMessageStream(stream PusherMessage) returns (EmptyResponse);
+  rpc SendMessageStream(stream PusherMessage) returns (stream Response);
 }
 
 message PusherMessage {
@@ -12,3 +12,7 @@ message PusherMessage {
 }
 
 message EmptyResponse {}
+
+message Response {
+  string status = 1;
+}

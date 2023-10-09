@@ -34,6 +34,11 @@ const stream = client.SendMessageStream((err, result) => {
   }
 });
 
+stream.on('data', (chunk) => {
+  const message = chunk.message;
+  console.log(chunk.status);
+});
+
 process.stdin.on('data', (chunk) => {
   const str = chunk.toString().trim();
   if (str === 'exit') {
