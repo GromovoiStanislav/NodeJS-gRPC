@@ -178,7 +178,7 @@ server.addService(auth_service_package.AuthRpc.service, {
       callback(null, {
         id: user.id,
         username: user.username,
-        email: user.email,
+        email: utils.decryptEmail(user.email),
       });
     } catch {
       const error = new Error('Unauthenticated');

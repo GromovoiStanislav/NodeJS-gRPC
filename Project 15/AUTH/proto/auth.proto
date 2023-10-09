@@ -16,7 +16,7 @@ message UserDto {
   string id = 1;
   string username = 2;
   string email = 3;
-  string password = 4;
+  optional string password = 4;
 }
 
 message TokensDto {
