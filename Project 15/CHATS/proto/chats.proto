@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package chats_service_package;
+
+service ChatsRpc {
+  rpc FetchAllChats (EmptyDto) returns (ListChatsDto);
+  rpc CreateChat (ChatDto) returns (ResponseDto);
+  rpc DeleteChat (ChatDto) returns (ResponseDto);
+  rpc FetchChat (ChatDto) returns (ChatDto);
+  
+  rpc SendMessage (MessageDto) returns (ResponseDto);
+  rpc DeleteMessage (MessageDto) returns (ResponseDto);
+
+  rpc ListenChat (ChatDto) returns (stream MessageDto);
+}
+
+
+message EmptyDto {}
+
+message ResponseDto {
+  string message = 1;
+}
+
+message ListChatsDto {
+  repeated ChatDto chats = 1;
+}
+
+message ChatDto {
+  string id = 1;
+  string name = 2;
+  string author_id = 3;
+  repeated MessageDto messages = 4;
+}
+
+message MessageDto {
+  string id = 1;
+  string body = 2;
+  string author_id = 3;
+  string chat_id = 4;
+}
