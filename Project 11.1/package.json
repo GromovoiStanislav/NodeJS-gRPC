@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "generate-grpc": "protoc --js_out=import_style=commonjs,binary:. ./protos/dummy.proto"
+    "generate": "protoc --js_out=import_style=commonjs,binary:. ./protos/example.proto"
   },
   "keywords": [],
   "author": "",
