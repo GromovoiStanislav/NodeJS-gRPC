@@ -1,4 +1,4 @@
-## Generate JS code from "xxx.proto" file (JS)
+## Generate JS code from xxx.proto file with protoc-gen-js (JS)
 
 ```
 npm i protoc-gen-js
