@@ -4,6 +4,15 @@ import { example } from './example.js'; // Импортируйте сгенер
 const request = new example.MyMessage({ name: 'John', age: 30 });
 console.log(request);
 
+const plainObj = request.toObject();
+console.log(plainObj);
+
+plainObj.name = 'New name';
+plainObj.age = 20;
+
+const newObj = example.MyMessage.fromObject(plainObj);
+console.log(newObj);
+
 // Сериализация объекта в бинарные данные
 const serializedData = request.serializeBinary(); //: Uint8Array
 console.log(serializedData);
