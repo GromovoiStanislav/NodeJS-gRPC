@@ -7,10 +7,3 @@ protoc --plugin=protoc-gen-ts_proto=".\\node_modules\\.bin\\protoc-gen-ts_proto.
 # or
 protoc -I ./protos --plugin=protoc-gen-ts_proto=.\\node_modules\\.bin\\protoc-gen-ts_proto.cmd --ts_proto_out=./src ./protos/example.proto
 ```
-
-to run:
-
-```
-npm run start:server
-npm run start:client
-```
