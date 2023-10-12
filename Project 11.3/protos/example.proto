@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package example;
+
+message MyMessage {
+  string name = 1;
+  int32 age = 2;
+}
+
+service MyService {
+  rpc DoSomething (MyMessage) returns (MyMessage);
+}
