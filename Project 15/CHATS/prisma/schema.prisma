@@ -7,9 +7,17 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User{
-  id String @id @default(cuid())
-  username String
-  email String  @unique
-  password String
+model Chat {
+  id Int @id @default(autoincrement())
+  name String
+  author_id String
+  messages Message[]
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+  body String
+  author_id String
+  chat_id Int
+  chat Chat @relation(fields: [chat_id], references: [id])
 }
