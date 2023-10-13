@@ -1,8 +1,9 @@
 # gRPC with NodeJS examples
 
-- 3 - NodeJS + gRPC with metadata (JS)
-- 4 - NodeJS + gRPC with metadata (TS)
-- 8 - NestJS + gRPC with metadata (JS)
+- 2 - Converting data to protobuf. gRPC demo (JS)
+- 3 - gRPC with metadata (JS)
+- 4 - NgRPC with metadata (TS)
+- 8 - gRPC with metadata (JS)
 - 9 - Minimum example of working with gRCP (JS)
 - 10 - Converting data to protobuf (JS)
 - 11.1 - Generate JS code from xxx.proto file with protoc-gen-js (JS)
