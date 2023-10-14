@@ -85,14 +85,15 @@ server.addService(chats_service_package.ChatsRpc.service, {
   },
 
   DeleteChat: async (call, callback) => {
-    const user_id = utils.getIdFromMetadata(call, callback);
-    if (!user_id) {
+    const author_id = utils.getIdFromMetadata(call, callback);
+    if (!author_id) {
       return;
     }
 
-    const { id: chatID } = call.request;
+    const { id } = call.request;
 
     /// Проверка на пустые поля
+    const chatID = Number(id);
     if (!chatID) {
       const error = new Error('Chat ID not found');
       error.code = grpc.status.INVALID_ARGUMENT;
@@ -101,15 +102,146 @@ server.addService(chats_service_package.ChatsRpc.service, {
     }
 
     try {
-      const chat = await chatsService.getChatByID(Number(chatID));
+      const chat = await chatsService.getChatByID(chatID);
       if (!chat) {
         const error = new Error('Chat not found');
         error.code = grpc.status.NOT_FOUND;
         callback(error);
         return;
       }
-      if (chat.author_id === user_id) {
-        await chatsService.deleteChatByID(Number(chatID));
+      if (chat.author_id === author_id) {
+        await chatsService.deleteChatByID(chatID);
+        callback(null, { message: 'Success' });
+      } else {
+        const error = new Error('PERMISSION_DENIED');
+        error.code = grpc.status.PERMISSION_DENIED;
+        callback(error);
+      }
+    } catch (e) {
+      console.log(e);
+      const error = new Error('Internal error');
+      error.code = grpc.status.INTERNAL;
+      callback(error);
+      return;
+    }
+  },
+
+  FetchChat: async (call, callback) => {
+    const author_id = utils.getIdFromMetadata(call, callback);
+    if (!author_id) {
+      return;
+    }
+
+    const { id } = call.request;
+
+    /// Проверка на пустые поля
+    const chatID = Number(id);
+    if (!chatID) {
+      const error = new Error('Chat ID not found');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+
+    try {
+      const chat = await chatsService.getChatByIdWithMessages(chatID);
+      if (!chat) {
+        const error = new Error('Chat not found');
+        error.code = grpc.status.NOT_FOUND;
+        callback(error);
+        return;
+      }
+
+      if (chat.author_id === author_id) {
+        callback(null, chat);
+      } else {
+        const error = new Error('PERMISSION_DENIED');
+        error.code = grpc.status.PERMISSION_DENIED;
+        callback(error);
+      }
+    } catch (e) {
+      console.log(e);
+      const error = new Error('Internal error');
+      error.code = grpc.status.INTERNAL;
+      callback(error);
+      return;
+    }
+  },
+
+  SendMessage: async (call, callback) => {
+    const author_id = utils.getIdFromMetadata(call, callback);
+    if (!author_id) {
+      return;
+    }
+
+    const { chat_id: id, body } = call.request;
+
+    /// Проверка на пустые поля
+    const chat_id = Number(id);
+    if (!chat_id) {
+      const error = new Error('Chat ID not found');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+    if (!body) {
+      const error = new Error('Body is emty');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+
+    try {
+      const chat = await chatsService.getChatByIdWithMessages(chat_id);
+      if (!chat) {
+        const error = new Error('Chat not found');
+        error.code = grpc.status.NOT_FOUND;
+        callback(error);
+        return;
+      }
+
+      await chatsService.createMessage({
+        chat_id,
+        author_id,
+        body,
+      });
+      callback(null, { message: 'Success' });
+    } catch (e) {
+      console.log(e);
+      const error = new Error('Internal error');
+      error.code = grpc.status.INTERNAL;
+      callback(error);
+      return;
+    }
+  },
+
+  DeleteMessage: async (call, callback) => {
+    const author_id = utils.getIdFromMetadata(call, callback);
+    if (!author_id) {
+      return;
+    }
+
+    const { id } = call.request;
+
+    /// Проверка на пустые поля
+    const messageID = Number(id);
+    if (!messageID) {
+      const error = new Error('Message ID not found');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+
+    try {
+      const message = await chatsService.getMessageByID(messageID);
+      if (!message) {
+        const error = new Error('Message not found');
+        error.code = grpc.status.NOT_FOUND;
+        callback(error);
+        return;
+      }
+      if (message.author_id === author_id) {
+        await chatsService.deleteMessageByID(messageID);
         callback(null, { message: 'Success' });
       } else {
         const error = new Error('PERMISSION_DENIED');
