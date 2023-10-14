@@ -11,6 +11,7 @@ model Chat {
   id Int @id @default(autoincrement())
   name String
   author_id String
+  member_id String?
   messages Message[]
 }
 
@@ -19,5 +20,5 @@ model Message {
   body String
   author_id String
   chat_id Int
-  chat Chat @relation(fields: [chat_id], references: [id])
+  chat Chat @relation(fields: [chat_id], references: [id], onDelete: Cascade)
 }

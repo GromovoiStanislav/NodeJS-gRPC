@@ -29,7 +29,8 @@ message ChatDto {
   string id = 1;
   string name = 2;
   string author_id = 3;
-  repeated MessageDto messages = 4;
+  string member_id = 4;
+  optional repeated MessageDto messages = 5;
 }
 
 message MessageDto {
