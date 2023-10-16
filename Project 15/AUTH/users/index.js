@@ -36,6 +36,20 @@ const findUser = async (identifier) => {
   });
 };
 
+const findUsers = async ({ key, limit, offset }) => {
+  return prisma.user.findMany({
+    where: {
+      username: {
+        contains: key,
+        mode: 'insensitive',
+      },
+    },
+    orderBy: { username: 'asc' },
+    take: limit,
+    skip: offset,
+  });
+};
+
 const getUserByID = async (id) => {
   return prisma.user.findUnique({
     where: {
@@ -55,6 +69,7 @@ const deleteUserByID = async (id) => {
 export default {
   createUser,
   findUser,
+  findUsers,
   getUserByID,
   deleteUserByID,
   updateUser,

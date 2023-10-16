@@ -11,7 +11,7 @@ model Chat {
   id Int @id @default(autoincrement())
   name String
   author_id String
-  member_id String?
+  member_id String
   messages Message[]
 }
 

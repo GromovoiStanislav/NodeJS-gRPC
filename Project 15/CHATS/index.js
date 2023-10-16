@@ -25,6 +25,9 @@ const packageDefinition = protoLoader.loadSync(
 // Загрузка gRPC пакета определения
 const { chats_service_package } = grpc.loadPackageDefinition(packageDefinition);
 
+// Инициализация объекта для хранения клиентских потоков по чатам
+const chatClients = {};
+
 const server = new grpc.Server();
 server.addService(chats_service_package.ChatsRpc.service, {
   /*
@@ -36,11 +39,17 @@ server.addService(chats_service_package.ChatsRpc.service, {
       return;
     }
 
-    const { name } = call.request;
+    const { name, member_id } = call.request;
 
     /// Проверка на пустые поля
     if (!name) {
       const error = new Error('Chat name not found');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+    if (!member_id) {
+      const error = new Error('Member ID not found');
       error.code = grpc.status.INVALID_ARGUMENT;
       callback(error);
       return;
@@ -51,6 +60,7 @@ server.addService(chats_service_package.ChatsRpc.service, {
       const newChat = await chatsService.createChat({
         name,
         author_id,
+        member_id,
       });
 
       /// Ответ
@@ -65,13 +75,13 @@ server.addService(chats_service_package.ChatsRpc.service, {
   },
 
   FetchAllChats: async (call, callback) => {
-    const author_id = utils.getIdFromMetadata(call, callback);
-    if (!author_id) {
+    const user_id = utils.getIdFromMetadata(call, callback);
+    if (!user_id) {
       return;
     }
 
     try {
-      const listChatsDto = await chatsService.listChats(author_id);
+      const listChatsDto = await chatsService.listChats(user_id);
 
       /// Ответ
       callback(null, { chats: listChatsDto });
@@ -127,8 +137,8 @@ server.addService(chats_service_package.ChatsRpc.service, {
   },
 
   FetchChat: async (call, callback) => {
-    const author_id = utils.getIdFromMetadata(call, callback);
-    if (!author_id) {
+    const user_id = utils.getIdFromMetadata(call, callback);
+    if (!user_id) {
       return;
     }
 
@@ -152,7 +162,7 @@ server.addService(chats_service_package.ChatsRpc.service, {
         return;
       }
 
-      if (chat.author_id === author_id) {
+      if (chat.author_id === user_id || chat.member_id === user_id) {
         callback(null, chat);
       } else {
         const error = new Error('PERMISSION_DENIED');
@@ -200,11 +210,19 @@ server.addService(chats_service_package.ChatsRpc.service, {
         return;
       }
 
-      await chatsService.createMessage({
+      const newMessage = await chatsService.createMessage({
         chat_id,
         author_id,
         body,
       });
+
+      // Рассылка сообщения всем активным клиентам
+      if (chatClients[chat_id]) {
+        chatClients[chat_id].forEach((client) => {
+          client.write(newMessage);
+        });
+      }
+
       callback(null, { message: 'Success' });
     } catch (e) {
       console.log(e);
@@ -215,7 +233,7 @@ server.addService(chats_service_package.ChatsRpc.service, {
     }
   },
 
-  DeleteMessage: async (call, callback) => {
+  DeleteMessage: async (call) => {
     const author_id = utils.getIdFromMetadata(call, callback);
     if (!author_id) {
       return;
@@ -255,6 +273,33 @@ server.addService(chats_service_package.ChatsRpc.service, {
       callback(error);
       return;
     }
+  },
+
+  ListenChat: (call, callback) => {
+    const { id } = call.request;
+
+    // /// Проверка на пустые поля
+    const chat_id = Number(id);
+    if (!chat_id) {
+      const error = new Error('Chat ID not found');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+
+    // Добавление клиентского потока к соответствующему чату
+    if (!chatClients[chat_id]) {
+      chatClients[chat_id] = [];
+    }
+    chatClients[chat_id].push(call);
+
+    // Удаление клиентского потока из списка активных клиентов при завершении
+    call.on('end', () => {
+      const index = clients.indexOf(call);
+      if (index !== -1) {
+        clients.splice(index, 1);
+      }
+    });
   },
 });
 

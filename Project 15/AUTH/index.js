@@ -268,6 +268,37 @@ server.addService(auth_service_package.AuthRpc.service, {
       return;
     }
   },
+
+  FindUsers: async (call, callback) => {
+    let { key, limit, offset } = call.request;
+
+    limit = limit || 100;
+    offset = offset || 0;
+
+    /// Проверка на пустые поля
+    if (!key) {
+      // Возвращаем пустой список
+      callback(null, []);
+      return;
+    }
+
+    /// Ищем пользователей в БД
+    try {
+      const users = await usersService.findUsers({
+        key,
+        limit,
+        offset,
+      });
+
+      /// Генерация токенов
+      callback(null, { users });
+    } catch {
+      const error = new Error('Internal error');
+      error.code = grpc.status.INTERNAL;
+      callback(error);
+      return;
+    }
+  },
 });
 
 // Запуск сервера

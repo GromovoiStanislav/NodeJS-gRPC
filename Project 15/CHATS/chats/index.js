@@ -2,26 +2,19 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const createChat = async ({ name, author_id }) => {
+const createChat = async ({ name, author_id, member_id }) => {
   return prisma.chat.create({
     data: {
       name,
       author_id,
+      member_id,
     },
   });
 };
 
-const listChats = async (author_id) => {
+const listChats = async (user_id) => {
   return prisma.chat.findMany({
-    where: {
-      author_id,
-    },
-    select: {
-      id: true,
-      name: true,
-      author_id: true,
-      messages: false,
-    },
+    where: { OR: [{ author_id: user_id }, { member_id: user_id }] },
   });
 };
 
