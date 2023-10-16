@@ -3,6 +3,8 @@
 - 2 - Converting data to protobuf. gRPC demo (JS)
 - 3 - gRPC with metadata (JS)
 - 4 - NgRPC with metadata (TS)
+
+- 7 - gRPC "helloworld" example (JS)
 - 8 - gRPC with metadata (JS)
 - 9 - Minimum example of working with gRCP (JS)
 - 10 - Converting data to protobuf (JS)
@@ -13,3 +15,4 @@
 - 13 - Auth service with gRCP (JS)
 - 14 - Realtime Chat with gRCP (JS)
 - 15 - gRPC backend for chat (JS)
+- 16 - gRPC with metadata and trailers "echo" example (JS)
