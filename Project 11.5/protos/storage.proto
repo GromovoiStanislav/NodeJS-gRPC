@@ -1,0 +1,13 @@
+syntax="proto3";
+
+message Query {
+    string id = 1;
+}
+
+message Object {
+    string name = 1;
+}
+
+service Storage {
+    rpc get(Query) returns (Object);
+}
