@@ -20,3 +20,4 @@
 - 16 - gRPC with metadata and trailers "echo" example (JS)
 - 17 - Error handling in gRPC (JS)
 - 18 - Cancellation gRPC (JS)
+- 19 - Deadline in gRPC example (JS)
