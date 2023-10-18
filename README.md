@@ -18,3 +18,4 @@
 - 14 - Realtime Chat with gRCP (JS)
 - 15 - gRPC backend for chat (JS)
 - 16 - gRPC with metadata and trailers "echo" example (JS)
+- 17 - Error handling in gRPC (JS)

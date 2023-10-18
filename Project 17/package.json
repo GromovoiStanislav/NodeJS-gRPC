@@ -1,0 +1,17 @@
+{
+  "name": "nodejs-grpc",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "server": "node server.js",
+    "client": "node client.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.9.0",
+    "@grpc/proto-loader": "^0.7.8",
+    "minimist": "^1.2.8"
+  }
+}
