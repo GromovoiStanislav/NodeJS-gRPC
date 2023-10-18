@@ -21,3 +21,4 @@
 - 17 - Error handling in gRPC (JS)
 - 18 - Cancellation gRPC (JS)
 - 19 - Deadline in gRPC example (JS)
+- 20 - Static code generation gRCP with grpc-tool (JS)
