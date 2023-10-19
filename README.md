@@ -16,9 +16,10 @@
 - 12 - Files transfer with gRCP (JS)
 - 13 - Auth service with gRCP (JS)
 - 14 - Realtime Chat with gRCP (JS)
-- 15 - gRPC backend for chat (JS)
-- 16 - gRPC with metadata and trailers "echo" example (JS)
-- 17 - Error handling in gRPC (JS)
-- 18 - Cancellation gRPC (JS)
-- 19 - Deadline in gRPC example (JS)
+- 15 - gRPC backend for chat (JS)\*
+- 16 - gRPC with metadata and trailers "echo" example (JS)\*
+- 17 - Error handling in gRPC (JS)\*
+- 18 - Cancellation gRPC (JS)\*
+- 19 - Deadline in gRPC example (JS)\*
 - 20 - Static code generation gRCP with grpc-tool (JS)
+- 21 - Static code generation gRCP with grpc-tool (JS)\*

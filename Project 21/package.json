@@ -1,0 +1,21 @@
+{
+  "name": "grpc",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "dynamic:server": "node ./dynamic_codegen/server.js",
+    "dynamic:client": "node  ./dynamic_codegen/client.js",
+    "static:server": "node ./static_codegen/server.js",
+    "static:client": "node  ./static_codegen/client.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.8.18",
+    "@grpc/proto-loader": "^0.7.8",
+    "async": "^3.2.4",
+    "google-protobuf": "^3.21.2",
+    "lodash": "^4.17.21"
+  }
+}
