@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package files_service_package;
+
+service FilesRpc {
+  rpc PutFile(FileDto) returns (ResponseDto);
+  rpc FetchFile(FileDto) returns (stream FileDto);
+  rpc DeleteFile(FileDto) returns (ResponseDto);
+ 
+  rpc PutAvatar(AvatarDto) returns (ResponseDto);
+  rpc FetchAvatar(AvatarDto) returns (AvatarDto);
+  rpc DeleteAvatar(AvatarDto) returns (ResponseDto);
+}
+
+message ResponseDto {
+  string message = 1;
+  bool is_complete = 2;
+  optional string tag = 3;
+}
+
+message FileDto {
+  bytes data = 1;
+  string name = 2;
+  string bucket = 3;
+  string tag = 4;
+}
+
+message AvatarDto {
+  bytes data = 1;
+}

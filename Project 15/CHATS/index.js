@@ -70,7 +70,6 @@ server.addService(chats_service_package.ChatsRpc.service, {
       const error = new Error('Internal error');
       error.code = grpc.status.INTERNAL;
       callback(error);
-      return;
     }
   },
 
@@ -90,7 +89,6 @@ server.addService(chats_service_package.ChatsRpc.service, {
       const error = new Error('Internal error');
       error.code = grpc.status.INTERNAL;
       callback(error);
-      return;
     }
   },
 
@@ -132,7 +130,6 @@ server.addService(chats_service_package.ChatsRpc.service, {
       const error = new Error('Internal error');
       error.code = grpc.status.INTERNAL;
       callback(error);
-      return;
     }
   },
 
@@ -174,7 +171,6 @@ server.addService(chats_service_package.ChatsRpc.service, {
       const error = new Error('Internal error');
       error.code = grpc.status.INTERNAL;
       callback(error);
-      return;
     }
   },
 
@@ -229,7 +225,6 @@ server.addService(chats_service_package.ChatsRpc.service, {
       const error = new Error('Internal error');
       error.code = grpc.status.INTERNAL;
       callback(error);
-      return;
     }
   },
 
@@ -271,19 +266,19 @@ server.addService(chats_service_package.ChatsRpc.service, {
       const error = new Error('Internal error');
       error.code = grpc.status.INTERNAL;
       callback(error);
-      return;
     }
   },
 
-  ListenChat: (call, callback) => {
+  ListenChat: (call) => {
     const { id } = call.request;
 
-    // /// Проверка на пустые поля
+    /// Проверка на пустые поля
     const chat_id = Number(id);
     if (!chat_id) {
-      const error = new Error('Chat ID not found');
-      error.code = grpc.status.INVALID_ARGUMENT;
-      callback(error);
+      call.emit('error', {
+        code: grpc.status.INVALID_ARGUMENT,
+        details: 'Chat ID not found',
+      });
       return;
     }
 
