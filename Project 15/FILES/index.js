@@ -133,10 +133,10 @@ server.addService(files_service_package.FilesRpc.service, {
   },
 
   FetchFile: async (call) => {
-    // const author_id = utils.getIdFromMetadata(call, callback);
-    // if (!author_id) {
-    //   return;
-    // }
+    const author_id = utils.getIdFromMetadata(call, undefined, true);
+    if (!author_id) {
+      return;
+    }
 
     const { bucket, name } = call.request;
 
@@ -289,7 +289,7 @@ server.addService(files_service_package.FilesRpc.service, {
         return;
       }
 
-      const data = fileStorage.fetchFile({
+      const data = await fileStorage.fetchFile({
         bucketName: AVATARS_BUCKET,
         fileName: String(author_id),
       });

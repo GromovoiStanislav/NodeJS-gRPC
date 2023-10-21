@@ -12,7 +12,7 @@ const getIdFromMetadata = (call, callback, isStream = false) => {
   if (!access_token) {
     if (isStream) {
       call.emit('error', {
-        code: grpc.status.INVALID_ARGUMENT,
+        code: grpcStatus.INVALID_ARGUMENT,
         details: 'Access token not found',
       });
     } else {
@@ -28,7 +28,7 @@ const getIdFromMetadata = (call, callback, isStream = false) => {
   } catch {
     if (isStream) {
       call.emit('error', {
-        code: grpc.status.UNAUTHENTICATED,
+        code: grpcStatus.UNAUTHENTICATED,
         details: 'Unauthenticated',
       });
     } else {

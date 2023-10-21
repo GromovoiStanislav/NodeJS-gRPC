@@ -270,7 +270,7 @@ server.addService(chats_service_package.ChatsRpc.service, {
   },
 
   ListenChat: (call) => {
-    const author_id = utils.getIdFromMetadata(call, callback, true);
+    const author_id = utils.getIdFromMetadata(call, undefined, true);
     if (!author_id) {
       return;
     }

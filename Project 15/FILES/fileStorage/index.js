@@ -15,7 +15,7 @@ const makeBucket = (bucketName) => {
     minioClient.makeBucket(bucketName, 'us-east-1', (err) => {
       if (err) {
         console.log(err);
-        reject();
+        reject(err);
       } else {
         console.log('Bucket created successfully in "us-east-1".');
         resolve(true);
@@ -29,7 +29,7 @@ const bucketExists = (bucketName) => {
     minioClient.bucketExists(bucketName, async (err, exists) => {
       if (err) {
         console.log(err);
-        reject();
+        reject(err);
       }
       if (exists) {
         //console.log('Bucket exists.');
@@ -53,7 +53,7 @@ const putObject = (bucketName, fileName, file) => {
     minioClient.putObject(bucketName, fileName, file, metaData, (err, etag) => {
       if (err) {
         console.log(err);
-        reject();
+        reject(err);
       } else {
         // console.log('File uploaded successfully.');
         resolve(etag);
@@ -100,9 +100,38 @@ const fetchFileStream = ({ customStream, bucketName, fileName }) => {
   });
 };
 
+const fetchFile = async ({ bucketName, fileName }) => {
+  let size = 0;
+  return new Promise((resolve, reject) => {
+    minioClient.getObject(bucketName, fileName, (err, dataStream) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      const chunks = [];
+
+      dataStream.on('data', (chunk) => {
+        size += chunk.length;
+        chunks.push(chunk);
+      });
+
+      dataStream.on('end', () => {
+        const concatenatedBuffer = Buffer.concat(chunks, size);
+        resolve(concatenatedBuffer);
+      });
+
+      dataStream.on('error', (err) => {
+        reject(err);
+      });
+    });
+  });
+};
+
 export default {
   putFile,
   removeFile,
   fetchFileStream,
+  fetchFile,
   bucketExists,
 };
