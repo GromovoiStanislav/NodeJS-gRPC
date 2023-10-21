@@ -1,4 +1,5 @@
 import { Client } from 'minio';
+import { Readable } from 'stream';
 
 const minioClient = new Client({
   endPoint: 'play.min.io',
@@ -185,4 +186,53 @@ const minioClient = new Client({
   };
 
   fetchFileStream({ bucketName: 'grpctest', fileName: 'cat.jpg' });
+}
+
+{
+  const customStream = new Readable();
+
+  customStream._read = () => {
+    // Пользовательский поток готов к чтению, но в этом примере нет необходимости в дополнительных действиях.
+  };
+  customStream.on('data', (chunk) => {
+    // chunk является буфером байтов
+    console.log(chunk);
+  });
+
+  customStream.on('end', () => {
+    console.log('Пользовательский поток завершился.');
+  });
+
+  customStream.on('error', (error) => {
+    console.error('Ошибка в пользовательском потоке:', error.message);
+  });
+
+  minioClient.getObject('grpctest', 'cat.jpg', (err, dataStream) => {
+    if (err) {
+      // Генерируем и передаем ошибку в пользовательский поток
+      const customError = new Error('Произошла ошибка');
+      customStream.emit('error', customError);
+      // Закрываем пользовательский поток после возникновения ошибки
+      customStream.push(null);
+      return;
+    }
+
+    dataStream.on('data', (chunk) => {
+      // Передаем chunk в пользовательский поток
+      customStream.push(chunk);
+    });
+
+    dataStream.on('end', () => {
+      customStream.push(null); // Сигнализируем о завершении чтения пользовательского потока
+      console.log('End.');
+    });
+
+    dataStream.on('error', (err) => {
+      // Генерируем и передаем ошибку в пользовательский поток
+      const customError = new Error('Произошла ошибка');
+      customStream.emit('error', customError);
+      // Закрываем пользовательский поток после возникновения ошибки
+      customStream.push(null);
+    });
+  });
 }

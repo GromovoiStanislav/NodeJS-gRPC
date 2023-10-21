@@ -3,6 +3,7 @@ import grpc from '@grpc/grpc-js';
 import protoLoader from '@grpc/proto-loader';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { Readable } from 'stream';
 
 import utils from './utils/index.js';
 import fileStorage from './fileStorage/index.js';
@@ -27,6 +28,7 @@ const { files_service_package } = grpc.loadPackageDefinition(packageDefinition);
 
 // Инициализация объекта для хранения клиентских потоков по чатам
 const chatClients = {};
+const AVATARS_BUCKET = 'avatars';
 
 const server = new grpc.Server();
 server.addService(files_service_package.FilesRpc.service, {
@@ -34,10 +36,10 @@ server.addService(files_service_package.FilesRpc.service, {
     Реализация методов сервера:
   */
   PutFile: async (call, callback) => {
-    // const author_id = utils.getIdFromMetadata(call, callback);
-    // if (!author_id) {
-    //   return;
-    // }
+    const author_id = utils.getIdFromMetadata(call, callback);
+    if (!author_id) {
+      return;
+    }
 
     const { bucket, name, data } = call.request;
 
@@ -83,10 +85,10 @@ server.addService(files_service_package.FilesRpc.service, {
   },
 
   DeleteFile: async (call, callback) => {
-    // const author_id = utils.getIdFromMetadata(call, callback);
-    // if (!author_id) {
-    //   return;
-    // }
+    const author_id = utils.getIdFromMetadata(call, callback);
+    if (!author_id) {
+      return;
+    }
 
     const { bucket, name } = call.request;
 
@@ -163,8 +165,26 @@ server.addService(files_service_package.FilesRpc.service, {
         return;
       }
 
+      const customStream = new Readable();
+      customStream._read = () => {};
+
+      customStream.on('data', (chunk) => {
+        call.write({ data: chunk });
+      });
+
+      customStream.on('end', () => {
+        call.end();
+      });
+
+      customStream.on('error', (error) => {
+        call.emit('error', {
+          code: grpc.status.INTERNAL,
+          details: error.message,
+        });
+      });
+
       fileStorage.fetchFileStream({
-        call,
+        customStream,
         bucketName: bucket,
         fileName: name,
       });
@@ -174,6 +194,113 @@ server.addService(files_service_package.FilesRpc.service, {
         code: grpc.status.INTERNAL,
         details: 'FetchFile is error',
       });
+    }
+  },
+
+  PutAvatar: async (call, callback) => {
+    const author_id = utils.getIdFromMetadata(call, callback);
+    if (!author_id) {
+      return;
+    }
+
+    const { data } = call.request;
+
+    /// Проверка на пустые поля
+    if (!data) {
+      const error = new Error('File not found');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+    /// Проверка на размер
+    if (data.length > 1e6) {
+      //1_000_000
+      const error = new Error('Avatar is very big');
+      error.code = grpc.status.INVALID_ARGUMENT;
+      callback(error);
+      return;
+    }
+
+    try {
+      const tag = await fileStorage.putFile({
+        bucketName: AVATARS_BUCKET,
+        fileName: String(author_id),
+        file: data,
+      });
+
+      /// Ответ
+      callback(null, {
+        message: 'Success',
+        is_complete: true,
+        tag: tag.etag,
+      });
+    } catch (e) {
+      console.log(e);
+      const error = new Error('PutAvatar is error');
+      error.code = grpc.status.INTERNAL;
+      callback(error);
+    }
+  },
+
+  DeleteAvatar: async (call, callback) => {
+    const author_id = utils.getIdFromMetadata(call, callback);
+    if (!author_id) {
+      return;
+    }
+
+    try {
+      if (!(await fileStorage.bucketExists(AVATARS_BUCKET))) {
+        const error = new Error('Bucket not exists');
+        error.code = grpc.status.NOT_FOUND;
+        callback(error);
+        return;
+      }
+
+      await fileStorage.removeFile({
+        bucketName: AVATARS_BUCKET,
+        fileName: String(author_id),
+      });
+
+      /// Ответ
+      callback(null, {
+        message: 'Success',
+        is_complete: true,
+      });
+    } catch (e) {
+      console.log(e);
+      const error = new Error('DeleteAvatar is error');
+      error.code = grpc.status.INTERNAL;
+      callback(error);
+    }
+  },
+
+  FetchAvatar: async (call, callback) => {
+    const author_id = utils.getIdFromMetadata(call, callback);
+    if (!author_id) {
+      return;
+    }
+
+    try {
+      if (!(await fileStorage.bucketExists(AVATARS_BUCKET))) {
+        call.emit('error', {
+          code: grpc.status.NOT_FOUND,
+          details: 'Bucket not exists',
+        });
+        return;
+      }
+
+      const data = fileStorage.fetchFile({
+        bucketName: AVATARS_BUCKET,
+        fileName: String(author_id),
+      });
+
+      /// Ответ
+      callback(null, { data });
+    } catch (e) {
+      console.log(e);
+      const error = new Error('FetchAvatar is error');
+      error.code = grpc.status.INTERNAL;
+      callback(error);
     }
   },
 });

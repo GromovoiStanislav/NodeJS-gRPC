@@ -74,32 +74,28 @@ const putFile = async ({ bucketName, fileName, file }) => {
   return await putObject(bucketName, fileName, file);
 };
 
-const fetchFileStream = ({ call, bucketName, fileName }) => {
+const fetchFileStream = ({ customStream, bucketName, fileName }) => {
   minioClient.getObject(bucketName, fileName, (err, dataStream) => {
     if (err) {
       console.log(err);
-      call.emit('error', {
-        code: 13, // grpc.status.INTERNAL
-        details: 'FetchFile is error',
-      });
+      customStream.emit('error', new Error('FetchFile is error'));
+      customStream.push(null);
       return;
     }
 
     dataStream.on('data', (chunk) => {
-      call.write({ data: chunk });
+      customStream.push(chunk);
     });
 
     dataStream.on('end', () => {
-      call.end();
+      customStream.push(null);
       // console.log('Получены все части данных и отправлены через gRPC.');
     });
 
     dataStream.on('error', (err) => {
       console.log(err);
-      call.emit('error', {
-        code: 13, // grpc.status.INTERNAL
-        details: 'FetchFile is error',
-      });
+      customStream.emit('error', new Error('FetchFile is error'));
+      customStream.push(null);
     });
   });
 };

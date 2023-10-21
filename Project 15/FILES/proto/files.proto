@@ -8,8 +8,8 @@ service FilesRpc {
   rpc DeleteFile(FileDto) returns (ResponseDto);
  
   rpc PutAvatar(AvatarDto) returns (ResponseDto);
-  rpc FetchAvatar(AvatarDto) returns (AvatarDto);
-  rpc DeleteAvatar(AvatarDto) returns (ResponseDto);
+  rpc FetchAvatar(EmptyDto) returns (AvatarDto);
+  rpc DeleteAvatar(EmptyDto) returns (ResponseDto);
 }
 
 message ResponseDto {
@@ -28,3 +28,5 @@ message FileDto {
 message AvatarDto {
   bytes data = 1;
 }
+
+message EmptyDto {}

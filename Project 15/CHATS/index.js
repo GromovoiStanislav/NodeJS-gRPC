@@ -228,7 +228,7 @@ server.addService(chats_service_package.ChatsRpc.service, {
     }
   },
 
-  DeleteMessage: async (call) => {
+  DeleteMessage: async (call, callback) => {
     const author_id = utils.getIdFromMetadata(call, callback);
     if (!author_id) {
       return;
@@ -270,6 +270,11 @@ server.addService(chats_service_package.ChatsRpc.service, {
   },
 
   ListenChat: (call) => {
+    const author_id = utils.getIdFromMetadata(call, callback, true);
+    if (!author_id) {
+      return;
+    }
+
     const { id } = call.request;
 
     /// Проверка на пустые поля
