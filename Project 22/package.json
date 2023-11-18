@@ -1,0 +1,14 @@
+{
+  "name": "protobuf",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "to-protobuf": "node to-protobuf.js",
+    "to-json": "node to-json.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "google-protobuf": "^3.21.2"
+  }
+}
