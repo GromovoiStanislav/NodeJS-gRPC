@@ -1,8 +1,7 @@
 const Schema = require('./proto/employees_pb');
 const fs = require('fs');
 
-// write data
-{
+const writeData = () => {
   const hussein = new Schema.Employee();
   hussein.setId(1001);
   hussein.setName('Hussein');
@@ -27,10 +26,9 @@ const fs = require('fs');
   console.log('binary ' + bytes);
   console.log();
   fs.writeFileSync('employeesbinary', bytes);
-}
+};
 
-// read data
-{
+const readData = () => {
   const bytes = fs.readFileSync('employeesbinary');
   const employees = Schema.Employees.deserializeBinary(bytes);
   // console.log(employees.toString());
@@ -49,4 +47,7 @@ const fs = require('fs');
     console.log('Salary:', element.getSalary());
     console.log();
   });
-}
+};
+
+writeData();
+readData();
