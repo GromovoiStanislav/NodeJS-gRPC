@@ -1,4 +1,3 @@
-const async = require('async');
 const fs = require('fs');
 const path = require('path');
 const _ = require('lodash');

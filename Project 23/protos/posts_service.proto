@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+message Post {
+  int32 id = 1;
+  string title = 2;
+  string text = 3;
+}
+
+message Empty {}
+
+message PostList {
+  repeated Post posts = 1;
+}
+
+service PostService {
+  rpc GetPosts(Empty) returns (PostList) {};
+}
