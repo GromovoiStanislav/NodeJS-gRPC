@@ -33,10 +33,10 @@ function main() {
   const server = new grpc.Server();
   server.addService(services.PostServiceService, { getPosts: getPosts });
   server.bindAsync(
-    '0.0.0.0:10000',
+    'localhost:10000',
     grpc.ServerCredentials.createInsecure(),
     () => {
-      console.log('Server running on', '0.0.0.0:10000');
+      console.log('Server running on', 'localhost:10000');
       server.start();
     }
   );
