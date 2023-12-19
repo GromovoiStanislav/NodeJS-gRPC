@@ -26,3 +26,4 @@
 - 22 - Static code generation with grpc-tool and working with Protobuf (JS)
 - 23 - Static code generation gRCP with grpc-tool (JS)
 - 24 - gRPC Reflection (JS)
+- 25 - gRPC Reflection (JS)
