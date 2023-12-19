@@ -9,7 +9,7 @@ const definition = grpc.loadPackageDefinition(proto);
 
 const serverUrl = 'localhost:10000';
 
-const client = new definition.PostService(
+const client = new definition.posts.PostService(
   serverUrl,
   grpc.credentials.createInsecure()
 );

@@ -19,7 +19,7 @@ const getPosts = (call, callback) => {
 const serverUrl = 'localhost:10000';
 const server = new grpc.Server();
 
-server.addService(definition.PostService.service, { getPosts });
+server.addService(definition.posts.PostService.service, { getPosts });
 
 server.bindAsync(serverUrl, grpc.ServerCredentials.createInsecure(), (port) => {
   console.log('Server running on', serverUrl);
