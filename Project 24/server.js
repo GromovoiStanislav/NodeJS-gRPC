@@ -4,7 +4,7 @@ const { ReflectionService } = require('@grpc/reflection');
 const path = require('node:path');
 
 const proto = protoLoader.loadSync(
-  path.join(__dirname, '/../protos/posts_service.proto')
+  path.join(__dirname, './protos/posts_service.proto')
 );
 const definition = grpc.loadPackageDefinition(proto);
 
@@ -24,7 +24,7 @@ const getPosts = (call, callback) => {
 const server = new grpc.Server();
 reflection.addToServer(server);
 
-server.addService(definition.PostService.service, { getPosts });
+server.addService(definition.posts.PostService.service, { getPosts });
 
 const serverUrl = 'localhost:10000';
 server.bindAsync(serverUrl, grpc.ServerCredentials.createInsecure(), (port) => {

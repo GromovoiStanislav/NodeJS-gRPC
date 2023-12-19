@@ -3,13 +3,13 @@ const protoLoader = require('@grpc/proto-loader');
 const path = require('node:path');
 
 const proto = protoLoader.loadSync(
-  path.join(__dirname, '/../protos/posts_service.proto')
+  path.join(__dirname, './protos/posts_service.proto')
 );
 const definition = grpc.loadPackageDefinition(proto);
 
 const serverUrl = 'localhost:10000';
 
-const client = new definition.PostService(
+const client = new definition.posts.PostService(
   serverUrl,
   grpc.credentials.createInsecure()
 );
