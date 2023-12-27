@@ -11,4 +11,6 @@ npm run static:client
 ```
 npm i google-protobuf
 npm install -g grpc-tools@1.11.3
+
+grpc_tools_node_protoc --js_out=import_style="commonjs,binary":./static_codegen/ --grpc_out=grpc_js:./static_codegen/ --proto_path=./protos/ ./protos/\*.proto
 ```

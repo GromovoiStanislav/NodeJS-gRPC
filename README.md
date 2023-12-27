@@ -2,7 +2,7 @@
 
 - 2 - Converting data to protobuf. gRPC demo (JS)
 - 3 - gRPC with metadata (JS)
-- 4 - NgRPC with metadata (TS)
+- 4 - gRPC with metadata (TS)
 
 - 7 - gRPC "helloworld" example (JS)
 - 8 - gRPC with metadata (JS)
@@ -28,3 +28,4 @@
 - 24 - gRPC Reflection (JS)
 - 25 - gRPC Reflection (JS)
 - 26 - Static code generation gRCP with grpc-tool (JS)
+- 27 - Generate JS code from xxx.proto file with protoc-gen-grpc (JS/.d.ts) (TS)
