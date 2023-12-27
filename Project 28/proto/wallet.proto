@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+service Wallet {
+    rpc createAddress (CreateAddressRequest) returns (CreateAddressResponse);
+    rpc transaction (TransactionRequest) returns (TransactionResponse);
+    rpc balance (BalanceRequest) returns (BalanceResponse);
+    rpc walletInfo (WalletInfoRequest) returns (WalletInfoResponse);
+}
+
+message CreateAddressRequest { }
+
+message CreateAddressResponse {
+    string address = 1;
+}
+
+message TransactionRequest {
+    string toAddress = 1;
+    int32 points = 2;
+    string metadata = 3;
+}
+
+message TransactionResponse {
+    int64 transaction_id = 1;
+}
+
+message BalanceRequest {
+    string address = 1;
+}
+
+message BalanceResponse {
+    int64 total = 1;
+    int64 available = 2;
+}
+
+message WalletInfoRequest {
+    string address = 1;
+}
+
+message WalletInfoResponse {
+    int64 total = 1;
+    int64 available = 2;
+    repeated Transaction transactions = 3;
+}
+
+message Transaction {
+    string to_address = 1;
+    int32 points = 2;
+    string metadata = 3;
+}

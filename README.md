@@ -29,3 +29,4 @@
 - 25 - gRPC Reflection (JS)
 - 26 - Static code generation gRCP with grpc-tool (JS)
 - 27 - Generate JS code from xxx.proto file with protoc-gen-grpc (JS/.d.ts) (TS)
+- 28 - Generate JS code from xxx.proto file with protoc-gen-grpc (JS/.d.ts) (TS)
