@@ -49,8 +49,15 @@ const main = async () => {
     },
 
     get: (call: grpc.ServerWritableStream<GetTemperature, Temperature>) => {
-      // const a = call.request?.a;
-      // const b = call.request?.b;
+      for (let i = 1; i <= 10; i++) {
+        call.write(
+          Temperature.fromObject({
+            code: call.request.code,
+            current: i,
+          })
+        );
+      }
+      call.end();
     },
   };
 
