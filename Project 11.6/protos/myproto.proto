@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+message Author {
+    string name = 1;
+    string role = 2;
+}
+
+message Change {
+    Kind kind = 1;
+    string patch = 2;
+    repeated string tags = 3; 
+    oneof name_or_id {
+        string name = 4;
+        string id = 5;
+    }
+    Author author = 6;
+}
+
+enum Kind {
+    UPDATED = 0;
+    DELETED = 1;
+}
