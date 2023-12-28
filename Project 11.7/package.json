@@ -1,0 +1,24 @@
+{
+  "name": "protoc-gen-ts",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "generate": "protoc -I=protos --ts_out=src/types weather.proto --ts_opt=unary_rpc_promise=true",
+    "build": "tsc",
+    "server": "node ./dist/server.js",
+    "client": "node ./dist/client.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.9.5",
+    "google-protobuf": "^3.21.2",
+    "protoc-gen-ts": "^0.8.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.6",
+    "typescript": "^5.2.2"
+  }
+}
