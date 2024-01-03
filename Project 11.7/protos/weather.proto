@@ -35,7 +35,7 @@ message Forecast {
 service Weather {
   rpc cities(CityQuery) returns (CityQuery.Result);
   rpc get(GetTemperature) returns (stream Temperature);
+  rpc forecast(stream Forecast) returns (stream Forecast.Result);
   // Unsupported at the moment
   rpc ping(stream Ping) returns (Ping.Ack); 
-  rpc forecast(stream Forecast) returns (stream Forecast.Result);
 }

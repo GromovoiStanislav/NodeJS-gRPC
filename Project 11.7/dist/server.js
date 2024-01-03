@@ -1,6 +1,6 @@
 import * as crypto from 'crypto';
 import * as grpc from '@grpc/grpc-js';
-import { City, CityQuery, Temperature, UnimplementedWeatherService, } from './types/weather.js';
+import { City, CityQuery, Forecast, Temperature, UnimplementedWeatherService, } from './types/weather.js';
 const server = new grpc.Server();
 const port = 9090;
 const host = '0.0.0.0';
@@ -45,6 +45,24 @@ const main = async () => {
                 }));
             }
             call.end();
+        },
+        forecast(call) {
+            call.on('data', (forecast) => {
+                const code = forecast.code;
+                const date = forecast.date;
+                for (let i = 0; i < 3; i++) {
+                    const temperature = new Temperature({
+                        code,
+                        current: getRandomInt(10, 30),
+                    });
+                    const result = new Forecast.Result({ temperature });
+                    setTimeout(() => call.write(result), getRandomInt(1, 3) * 1000);
+                }
+            });
+            // Client closed the stream
+            call.on('end', () => {
+                call.end();
+            });
         },
     };
     server.addService(UnimplementedWeatherService.definition, serviceImpl);

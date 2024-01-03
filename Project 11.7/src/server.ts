@@ -3,6 +3,7 @@ import * as grpc from '@grpc/grpc-js';
 import {
   City,
   CityQuery,
+  Forecast,
   GetTemperature,
   Temperature,
   UnimplementedWeatherService,
@@ -68,6 +69,27 @@ const main = async () => {
       }
 
       call.end();
+    },
+
+    forecast(call: grpc.ServerDuplexStream<Forecast, Forecast.Result>) {
+      call.on('data', (forecast) => {
+        const code = forecast.code;
+        const date = forecast.date;
+
+        for (let i = 0; i < 3; i++) {
+          const temperature = new Temperature({
+            code,
+            current: getRandomInt(10, 30),
+          });
+          const result = new Forecast.Result({ temperature });
+          setTimeout(() => call.write(result), getRandomInt(1, 3) * 1000);
+        }
+      });
+
+      // Client closed the stream
+      call.on('end', () => {
+        call.end();
+      });
     },
   };
 
