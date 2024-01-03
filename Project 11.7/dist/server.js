@@ -12,6 +12,9 @@ const main = async () => {
         const scaledNumber = Math.floor((randomNumber / 0xffffffff) * range);
         return scaledNumber + min;
     };
+    const getRandomInt = (min, max) => {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    };
     const serviceImpl = {
         cities: (call, callback) => {
             const cities = [];
@@ -32,12 +35,13 @@ const main = async () => {
             callback(null, result);
         },
         get: (call) => {
-            // const a = call.request?.a;
-            // const b = call.request?.b;
-            for (let i = 1; i <= 10; i++) {
+            const { code } = call.request;
+            let temp = 70;
+            for (let i = 0; i < getRandomInt(10, 30); i++) {
+                temp = temp - getRandomInt(0, 4);
                 call.write(Temperature.fromObject({
-                    code: call.request.code,
-                    current: i,
+                    code: code,
+                    current: temp,
                 }));
             }
             call.end();

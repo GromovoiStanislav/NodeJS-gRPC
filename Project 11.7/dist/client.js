@@ -15,12 +15,12 @@ client
     code: cities_r.cities[0].code,
 }))
     .on('data', (data) => {
-    console.log(data.code, data.current);
+    console.log(`code: ${data.code}, current: ${data.current}`);
 });
 client
     .get(GetTemperature.fromObject({
     code: cities_r.cities[1].code,
 }))
     .on('data', (data) => {
-    console.log(data.code, data.current);
+    console.log(`code: ${data.code}, current: ${data.current}`);
 });

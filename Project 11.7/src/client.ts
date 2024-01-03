@@ -31,7 +31,7 @@ client
     })
   )
   .on('data', (data: Temperature) => {
-    console.log(data.code, data.current);
+    console.log(`code: ${data.code}, current: ${data.current}`);
   });
 
 client
@@ -41,5 +41,5 @@ client
     })
   )
   .on('data', (data: Temperature) => {
-    console.log(data.code, data.current);
+    console.log(`code: ${data.code}, current: ${data.current}`);
   });
