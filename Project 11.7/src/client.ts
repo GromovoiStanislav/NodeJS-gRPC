@@ -26,30 +26,30 @@ cities.cities.forEach((city: City) => {
 });
 
 ////// get
-// client
-//   .get(
-//     GetTemperature.fromObject({
-//       code: cities.cities![0].code,
-//     })
-//   )
-//   .on('data', (data: Temperature) => {
-//     console.log(`code: ${data.code}, current: ${data.current}`);
-//   });
+client
+  .get(
+    GetTemperature.fromObject({
+      code: cities.cities![0].code,
+    })
+  )
+  .on('data', (data: Temperature) => {
+    console.log(`get: code: ${data.code}, current: ${data.current}`);
+  });
 
-// client
-//   .get(
-//     GetTemperature.fromObject({
-//       code: cities.cities![1].code,
-//     })
-//   )
-//   .on('data', (data: Temperature) => {
-//     console.log(`code: ${data.code}, current: ${data.current}`);
-//   });
+client
+  .get(
+    GetTemperature.fromObject({
+      code: cities.cities![1].code,
+    })
+  )
+  .on('data', (data: Temperature) => {
+    console.log(`get: code: ${data.code}, current: ${data.current}`);
+  });
 
 ////// forecast
 const stream = client.forecast().on('data', (data: Forecast.Result) => {
   console.log(
-    `code: ${data.temperature.code}, current: ${data.temperature.current}`
+    `forecast: code: ${data.temperature.code}, current: ${data.temperature.current}`
   );
 });
 
