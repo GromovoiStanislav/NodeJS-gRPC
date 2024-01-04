@@ -50,7 +50,7 @@ const main = async () => {
             call.on('data', (forecast) => {
                 const code = forecast.code;
                 const date = forecast.date;
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 5; i++) {
                     const temperature = new Temperature({
                         code,
                         current: getRandomInt(10, 30),
@@ -61,7 +61,7 @@ const main = async () => {
             });
             // Client closed the stream
             call.on('end', () => {
-                call.end();
+                setTimeout(() => call.end(), 10 * 1000);
             });
         },
     };

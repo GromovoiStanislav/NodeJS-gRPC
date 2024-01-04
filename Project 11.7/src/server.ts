@@ -88,7 +88,7 @@ const main = async () => {
 
       // Client closed the stream
       call.on('end', () => {
-        call.end();
+        setTimeout(() => call.end(), 10 * 1000);
       });
     },
   };

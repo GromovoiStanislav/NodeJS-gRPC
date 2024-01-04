@@ -56,4 +56,4 @@ const stream = client.forecast().on('data', (data: Forecast.Result) => {
 cities.cities.forEach((city: City) => {
   stream.write(new Forecast({ code: city.code, date: Date.now().toString() }));
 });
-setTimeout(() => stream.end(), 10 * 1000);
+stream.end();
