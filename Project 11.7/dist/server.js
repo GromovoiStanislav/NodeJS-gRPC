@@ -55,7 +55,7 @@ const main = async () => {
             call.end();
         },
         forecast(call) {
-            call.on('data', (forecast) => {
+            call.on('data', async (forecast) => {
                 const code = forecast.code;
                 const date = forecast.date;
                 for (let i = 0; i < 5; i++) {
@@ -63,8 +63,8 @@ const main = async () => {
                         code,
                         current: getRandomInt(10, 30),
                     });
-                    const result = new weather.Forecast.Result({ temperature });
-                    setTimeout(() => call.write(result), getRandomInt(1, 3) * 1000);
+                    call.write(new weather.Forecast.Result({ temperature }));
+                    await delay(getRandomInt(200, 800));
                 }
             });
             // Client closed the stream
