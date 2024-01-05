@@ -1,6 +1,6 @@
 import * as crypto from 'crypto';
 import * as grpc from '@grpc/grpc-js';
-import { City, CityQuery, Forecast, Temperature, UnimplementedWeatherService, } from './types/weather.js';
+import { weather } from './types/weather.js';
 const server = new grpc.Server();
 const port = 9090;
 const host = '0.0.0.0';
@@ -15,34 +15,42 @@ const main = async () => {
     const getRandomInt = (min, max) => {
         return Math.floor(Math.random() * (max - min + 1) + min);
     };
+    const delay = (ms) => {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(null);
+            }, ms);
+        });
+    };
     const serviceImpl = {
         cities: (call, callback) => {
             const cities = [];
             {
-                const city = new City();
+                const city = new weather.City();
                 city.code = 'TR_ANTALYA';
                 city.name = 'Antalya';
                 cities.push(city);
             }
             {
-                const city = new City();
+                const city = new weather.City();
                 city.code = 'CA_VANCOUVER';
                 city.name = 'Vancouver';
                 cities.push(city);
             }
-            const result = new CityQuery.Result();
+            const result = new weather.CityQuery.Result();
             result.cities = cities;
             callback(null, result);
         },
-        get: (call) => {
+        get: async (call) => {
             const { code } = call.request;
             let temp = 70;
             for (let i = 0; i < getRandomInt(10, 30); i++) {
                 temp = temp - getRandomInt(0, 4);
-                call.write(Temperature.fromObject({
+                call.write(weather.Temperature.fromObject({
                     code: code,
                     current: temp,
                 }));
+                await delay(getRandomInt(200, 800));
             }
             call.end();
         },
@@ -51,11 +59,11 @@ const main = async () => {
                 const code = forecast.code;
                 const date = forecast.date;
                 for (let i = 0; i < 5; i++) {
-                    const temperature = new Temperature({
+                    const temperature = new weather.Temperature({
                         code,
                         current: getRandomInt(10, 30),
                     });
-                    const result = new Forecast.Result({ temperature });
+                    const result = new weather.Forecast.Result({ temperature });
                     setTimeout(() => call.write(result), getRandomInt(1, 3) * 1000);
                 }
             });
@@ -65,7 +73,7 @@ const main = async () => {
             });
         },
     };
-    server.addService(UnimplementedWeatherService.definition, serviceImpl);
+    server.addService(weather.UnimplementedWeatherService.definition, serviceImpl);
     server.bindAsync(`${host}:${port}`, grpc.ServerCredentials.createInsecure(), (err, port) => {
         server.start();
         console.log('server running on port', port);
