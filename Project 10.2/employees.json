@@ -1,0 +1,33 @@
+{
+  "nested": {
+    "main": {
+      "nested": {
+        "Employee": {
+          "fields": {
+            "id": {
+              "type": "int32",
+              "id": 1
+            },
+            "name": {
+              "type": "string",
+              "id": 2
+            },
+            "salary": {
+              "type": "float",
+              "id": 3
+            }
+          }
+        },
+        "Employees": {
+          "fields": {
+            "employees": {
+              "rule": "repeated",
+              "type": "Employee",
+              "id": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

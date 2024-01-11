@@ -9,6 +9,7 @@
 - 9 - Minimum example of working with gRCP (JS)
 - 10 - Converting data to protobuf with protobufjs or pbjs (JS)
 - 10.1 - Converting data to protobuf with protobufjs (JS)
+- 10.2 - Generate static code with protobufjs-cli (JS)
 - 11.1 - Generate JS code from xxx.proto file with protoc-gen-js (JS)
 - 11.2 - Generate TS code from xxx.proto file with protoc-gen-ts (TS)
 - 11.3 - Generate TS code from xxx.proto file with ts-proto (TS)

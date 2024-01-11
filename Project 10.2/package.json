@@ -1,0 +1,22 @@
+{
+  "name": "protobuf",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "bundle-json": "pbjs -t json proto/employees.proto > employees.json",
+    "bundle-js": "pbjs -t static-module proto/employees.proto > employees.js",
+    "example-1": "node example-1.js",
+    "example-2": "node example-2.js",
+    "example-3": "node example-3.js",
+    "example-4": "node example-4.js",
+    "example-5": "node example-5.js",
+    "example-6": "node example-6.js",
+    "example-7": "node example-7.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "protobufjs": "^7.2.5",
+    "protobufjs-cli": "^1.1.2"
+  }
+}
