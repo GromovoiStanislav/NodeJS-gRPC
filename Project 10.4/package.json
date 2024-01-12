@@ -1,0 +1,21 @@
+{
+  "name": "protobuf",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "bundle-es5": "pbjs proto/employees.proto --es5 employees.js",
+    "bundle-es6": "pbjs proto/employees.proto --es6 employees.mjs",
+    "bundle-ts": "pbjs proto/employees.proto --ts employees.ts",
+    "example-1": "node example-1.js",
+    "example-2": "node example-2.js",
+    "example-3": "node example-3.mjs",
+    "example-4": "node example-4.js",
+    "example-5": "node example-5.js",
+    "example-6": "node example-6.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pbjs": "^0.0.14"
+  }
+}
