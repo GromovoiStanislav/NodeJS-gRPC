@@ -1,4 +1,4 @@
-import { encodeAwesomeMessage, decodeAwesomeMessage } from './awesome.mjs';
+import { encodeAwesomeMessage, decodeAwesomeMessage } from './awesome.js';
 
 const buffer = encodeAwesomeMessage({ awesome_field: 'AwesomeString' });
 console.log(buffer);

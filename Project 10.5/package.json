@@ -1,0 +1,19 @@
+{
+  "name": "protobuf",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "bundle-ts": "pbjs proto/awesome.proto --ts src/awesome.ts",
+    "build": "tsc",
+    "example-1": "node ./build/example-1.js",
+    "example-2": "node ./build/example-2.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "pbjs": "^0.0.14"
+  }
+}
