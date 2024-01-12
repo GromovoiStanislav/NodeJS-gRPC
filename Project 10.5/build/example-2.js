@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const employees_js_1 = require("./employees.js");
+import { encodeEmployee, decodeEmployee, encodeEmployees, decodeEmployees, } from './employees.js';
 const encode = () => {
     // Создайте объект данных
     const payload = { employees: [] };
@@ -10,9 +8,9 @@ const encode = () => {
         salary: 3000,
     };
     {
-        const buffer = (0, employees_js_1.encodeEmployee)(hussein);
+        const buffer = encodeEmployee(hussein);
         console.log(buffer);
-        const employee = (0, employees_js_1.decodeEmployee)(buffer);
+        const employee = decodeEmployee(buffer);
         console.log(employee);
         console.log();
     }
@@ -30,14 +28,14 @@ const encode = () => {
     };
     payload.employees.push(rick);
     // Encode a message to an Uint8Array
-    const buffer = (0, employees_js_1.encodeEmployees)(payload);
+    const buffer = encodeEmployees(payload);
     console.log(buffer);
     console.log();
     return buffer;
 };
 const decode = (buffer) => {
     // Decode Buffer to a message
-    const message = (0, employees_js_1.decodeEmployees)(buffer);
+    const message = decodeEmployees(buffer);
     console.log(message);
     console.log();
     message.employees.forEach((element) => {

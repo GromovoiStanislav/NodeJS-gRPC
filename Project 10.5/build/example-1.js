@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const awesome_js_1 = require("./awesome.js");
-const buffer = (0, awesome_js_1.encodeAwesomeMessage)({ awesome_field: 'AwesomeString' });
+import { encodeAwesomeMessage, decodeAwesomeMessage } from './awesome.js';
+const buffer = encodeAwesomeMessage({ awesome_field: 'AwesomeString' });
 console.log(buffer);
 console.log();
-const message = (0, awesome_js_1.decodeAwesomeMessage)(buffer);
+const message = decodeAwesomeMessage(buffer);
 console.log(message);
 // Output:
 // Uint8Array(15)[

@@ -2,6 +2,7 @@
   "name": "protobuf",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "scripts": {
     "bundle-ts": "pbjs proto/awesome.proto --ts src/awesome.ts",
     "build": "tsc",

@@ -1,12 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.decodeEmployees = exports.encodeEmployees = exports.decodeEmployee = exports.encodeEmployee = void 0;
-function encodeEmployee(message) {
+export function encodeEmployee(message) {
     let bb = popByteBuffer();
     _encodeEmployee(message, bb);
     return toUint8Array(bb);
 }
-exports.encodeEmployee = encodeEmployee;
 function _encodeEmployee(message, bb) {
     // optional int32 id = 1;
     let $id = message.id;
@@ -27,10 +23,9 @@ function _encodeEmployee(message, bb) {
         writeFloat(bb, $salary);
     }
 }
-function decodeEmployee(binary) {
+export function decodeEmployee(binary) {
     return _decodeEmployee(wrapByteBuffer(binary));
 }
-exports.decodeEmployee = decodeEmployee;
 function _decodeEmployee(bb) {
     let message = {};
     end_of_message: while (!isAtEnd(bb)) {
@@ -59,12 +54,11 @@ function _decodeEmployee(bb) {
     }
     return message;
 }
-function encodeEmployees(message) {
+export function encodeEmployees(message) {
     let bb = popByteBuffer();
     _encodeEmployees(message, bb);
     return toUint8Array(bb);
 }
-exports.encodeEmployees = encodeEmployees;
 function _encodeEmployees(message, bb) {
     // repeated Employee employees = 1;
     let array$employees = message.employees;
@@ -79,10 +73,9 @@ function _encodeEmployees(message, bb) {
         }
     }
 }
-function decodeEmployees(binary) {
+export function decodeEmployees(binary) {
     return _decodeEmployees(wrapByteBuffer(binary));
 }
-exports.decodeEmployees = decodeEmployees;
 function _decodeEmployees(bb) {
     let message = {};
     end_of_message: while (!isAtEnd(bb)) {

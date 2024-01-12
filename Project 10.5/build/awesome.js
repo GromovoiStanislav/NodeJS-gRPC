@@ -1,12 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.decodeAwesomeMessage = exports.encodeAwesomeMessage = void 0;
-function encodeAwesomeMessage(message) {
+export function encodeAwesomeMessage(message) {
     let bb = popByteBuffer();
     _encodeAwesomeMessage(message, bb);
     return toUint8Array(bb);
 }
-exports.encodeAwesomeMessage = encodeAwesomeMessage;
 function _encodeAwesomeMessage(message, bb) {
     // optional string awesome_field = 1;
     let $awesome_field = message.awesome_field;
@@ -15,10 +11,9 @@ function _encodeAwesomeMessage(message, bb) {
         writeString(bb, $awesome_field);
     }
 }
-function decodeAwesomeMessage(binary) {
+export function decodeAwesomeMessage(binary) {
     return _decodeAwesomeMessage(wrapByteBuffer(binary));
 }
-exports.decodeAwesomeMessage = decodeAwesomeMessage;
 function _decodeAwesomeMessage(bb) {
     let message = {};
     end_of_message: while (!isAtEnd(bb)) {
