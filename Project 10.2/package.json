@@ -5,6 +5,8 @@
   "scripts": {
     "bundle-json": "pbjs -t json proto/employees.proto > employees.json",
     "bundle-js": "pbjs -t static-module proto/employees.proto > employees.js",
+    "bundle-js2": "pbjs -t static-module -w commonjs -o awesome.js proto/awesome.proto",
+    "bundle-ts": "pbts -o awesome.d.ts awesome.js",
     "example-1": "node example-1.js",
     "example-2": "node example-2.js",
     "example-3": "node example-3.js",
