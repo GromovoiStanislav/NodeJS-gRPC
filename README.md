@@ -13,6 +13,7 @@
 - 10.3 - Generate static code with protobufjs-cli (TS)
 - 10.4 - Generate static code with pbjs (JS)
 - 10.5 - Generate static code with pbjs (TS)
+- 10.6 - Working with pbjs and protobufjs (TS)
 - 11.1 - Generate JS code from xxx.proto file with protoc-gen-js (JS)
 - 11.2 - Generate TS code from xxx.proto file with protoc-gen-ts (TS)
 - 11.3 - Generate TS code from xxx.proto file with ts-proto (TS)

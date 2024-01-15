@@ -1,0 +1,22 @@
+{
+  "name": "protobuf",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "bundle-ts": "pbjs proto/enum.proto --ts src/enum.proto.ts",
+    "build": "tsc",
+    "enum1": "node ./build/enum1.js",
+    "enum2": "node ./build/enum2.js",
+    "awesome1": "node ./build/awesome1.js",
+    "awesome2": "node ./build/awesome2.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pbjs": "^0.0.14",
+    "protobufjs": "^7.2.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
