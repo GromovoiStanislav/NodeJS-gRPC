@@ -7,3 +7,5 @@
 ```
 npm start
 ```
+
+[Testing our services with Postman](./POSTMAN.md)

@@ -1,4 +1,4 @@
-#### Testing gRPC servers with Postman:
+#### Testing gRPC services with Postman:
 
 <image src="./images/postman1.gif" alt="Postman">
 
