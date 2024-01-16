@@ -1,0 +1,19 @@
+@api = http://localhost:3000
+@orderId= 1
+
+
+### Create a new order
+POST {{api}}/studentOnboard
+Content-Type: application/json
+
+{
+    "degreeId": 4000,
+    "name": "Tom",
+    "DOB": "25-02-1990",
+    "education": "BE",
+    "fatherName": "ABP"
+}
+
+
+### check onboarding status 
+GET {{api}}/onboardingStatus/{{orderId}}
