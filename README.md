@@ -40,3 +40,4 @@
 - 28 - Generate JS code from xxx.proto file with protoc-gen-grpc (JS/.d.ts) (TS)
 - 29 - Generate JS code from xxx.proto file with protoc-gen-grpc (JS/.d.ts) (TS)
 - 30 - Using gRPC for communication between micro services in Express (JS)
+- 31 - gRPC API example (JS)
