@@ -39,10 +39,21 @@ async function main() {
   console.log(message4); // { awesome_field: 'Awesome String' }
   assert.deepEqual(message4, message);
 
-  const buffer2 = awesomeMessage.encode(message).finish();
-  const message5 = schema.decodeAwesomeMessage(buffer2);
-  console.log(message5); // { awesome_field: 'Awesome String' }
-  assert.deepEqual(message5, message);
+  {
+    const buffer2 = awesomeMessage.encode(message).finish();
+    const message5 = schema.decodeAwesomeMessage(buffer2);
+    console.log(message5); // { awesome_field: 'Awesome String' }
+    assert.deepEqual(message5, message);
+  }
+
+  {
+    const buffer2 = awesomeMessage
+      .encode(awesomeMessage.create(message))
+      .finish();
+    const message5 = schema.decodeAwesomeMessage(buffer2);
+    console.log(message5); // { awesome_field: 'Awesome String' }
+    assert.deepEqual(message5, message);
+  }
 }
 
 main();

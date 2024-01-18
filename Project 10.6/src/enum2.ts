@@ -1,7 +1,5 @@
 import * as protobufjs from 'protobufjs';
-import { parseSchema } from 'pbjs';
 import * as assert from 'node:assert';
-import * as fs from 'node:fs';
 import {
   Enum,
   EnumTest,
@@ -33,10 +31,16 @@ async function main() {
   console.log(message4); // { a: 'B', b: 'A', c: [ 'A', 'B' ] }
   assert.deepEqual(message4, message);
 
-  const buffer2 = enumTest.encode(message).finish();
-  const message5 = enumTest.decode(buffer2);
-  console.log(message5); // { a: 'A', b: 'A', c: [ 'A', 'A' ] } ???????????
-  //assert.deepEqual(message5, message);
+  const buffer2 = enumTest.encode(enumTest.fromObject(message)).finish();
+  const message5 = enumTest.toObject(enumTest.decode(buffer2), {
+    enums: String,
+  });
+  console.log(message5); // { a: 'B', b: 'A', c: [ 'A', 'B' ] }
+  assert.deepEqual(message5, message);
+
+  const message6 = decodeEnumTest(buffer2);
+  console.log(message6); // { a: 'B', b: 'A', c: [ 'A', 'B' ] }
+  assert.deepEqual(message2, message);
 }
 
 main();

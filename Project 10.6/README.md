@@ -16,6 +16,11 @@ npm run bundle-ts
 #### Start:
 
 ```
-npm run test
-npm run awesome
+npm run build
+
+npm run enum1
+npm run enum2
+
+npm run awesome1
+npm run awesome2
 ```

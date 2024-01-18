@@ -31,10 +31,20 @@ function main() {
         const message4 = awesomeMessage.toObject(message3);
         console.log(message4); // { awesome_field: 'Awesome String' }
         assert.deepEqual(message4, message);
-        const buffer2 = awesomeMessage.encode(message).finish();
-        const message5 = (0, awesome_proto_js_1.decodeAwesomeMessage)(buffer2);
-        console.log(message5); // { awesome_field: 'Awesome String' }
-        assert.deepEqual(message5, message);
+        {
+            const buffer2 = awesomeMessage.encode(message).finish();
+            const message5 = (0, awesome_proto_js_1.decodeAwesomeMessage)(buffer2);
+            console.log(message5); // { awesome_field: 'Awesome String' }
+            assert.deepEqual(message5, message);
+        }
+        {
+            const buffer2 = awesomeMessage
+                .encode(awesomeMessage.create(message))
+                .finish();
+            const message5 = (0, awesome_proto_js_1.decodeAwesomeMessage)(buffer2);
+            console.log(message5); // { awesome_field: 'Awesome String' }
+            assert.deepEqual(message5, message);
+        }
     });
 }
 main();

@@ -39,10 +39,17 @@ function main() {
         const message4 = enumTest.toObject(message3, { enums: String });
         console.log(message4); // { a: 'B', b: 'A', c: [ 'A', 'B' ] }
         assert.deepEqual(message4, message);
-        const buffer2 = enumTest.encode(message).finish();
-        const message5 = enumTest.decode(buffer2);
-        console.log(message5); // { a: 'A', b: 'A', c: [ 'A', 'A' ] } ???????????
-        //assert.deepEqual(message5, message);
+        const message5 = enumTest.fromObject(message);
+        console.log(message5); // { c: [ 'A', 'B' ], a: 'B', b: 'A' }
+        const buffer2 = enumTest.encode(message5).finish();
+        const message6 = enumTest.decode(buffer2);
+        console.log(message6); // EnumTest { c: [ 0, 1 ], a: 1, b: 0 }
+        const message7 = enumTest.toObject(message6, { enums: String });
+        console.log(message7); // { a: 'B', b: 'A', c: [ 'A', 'B' ] }
+        assert.deepEqual(message7, message);
+        const message8 = schema.decodeEnumTest(buffer2);
+        console.log(message8); // { a: 'B', b: 'A', c: [ 'A', 'B' ] }
+        assert.deepEqual(message8, message);
     });
 }
 main();
