@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package example;
+
+enum Type{
+    A = 0;
+    B = 1;
+    C = 2;
+}
+
+message User{
+  string name = 1;
+}
+
+message Message{
+    User to = 1;
+    User from = 2;
+    Type type = 3;
+}

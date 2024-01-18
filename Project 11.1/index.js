@@ -18,8 +18,7 @@ const binaryData = myMessage.serializeBinary();
 console.log(binaryData);
 
 // Десериализуйте бинарные данные обратно в объект MyMessage
-const deserializedMessage =
-  proto.example.MyMessage.deserializeBinary(binaryData);
+const deserializedMessage = MyMessage.deserializeBinary(binaryData);
 console.log(deserializedMessage);
 
 /////////

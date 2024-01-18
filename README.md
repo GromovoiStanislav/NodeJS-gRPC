@@ -21,6 +21,7 @@
 - 11.5 - Generate TS code from xxx.proto file with protoc-gen-ts (TS)
 - 11.6 - Generate TS code from xxx.proto file with protoc-gen-ts (TS)
 - 11.7 - Generate TS code from xxx.proto file with protoc-gen-ts (TS)
+- 11.8 - Generate JS code from xxx.proto file with protoc-gen-js (JS)
 - 12 - Files transfer with gRCP (JS)
 - 13 - Auth service with gRCP (JS)
 - 14 - Realtime Chat with gRCP (JS)
