@@ -42,3 +42,4 @@
 - 30 - Using gRPC for communication between micro services in Express (JS)
 - 31 - gRPC API example (JS)
 - 32 - Generate JS code from xxx.proto file with protoc-gen-grpc (JS/.d.ts) (TS)
+- 33 - gRPC with TypeScript example (TS)
