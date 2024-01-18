@@ -3,7 +3,7 @@ const protobuf = require('protobufjs');
 // Загрузите описание протобуфера из файла mydata.proto
 const root = protobuf.loadSync('proto/enum.proto');
 
-// // Получите тип сообщения для вашей структуры данных
+// Получите тип сообщения для вашей структуры данных
 const EnumTest = root.lookupType('test.EnumTest');
 const Enum = root.lookupEnum('test.Enum');
 
@@ -43,6 +43,12 @@ console.log(buffer);
     // see ConversionOptions
   });
   console.log(object);
+
+  console.log(
+    EnumTest.toObject(message, {
+      enums: String,
+    })
+  );
 }
 
 // Output:
@@ -51,3 +57,4 @@ console.log(buffer);
 // <Buffer 08 01 10 00 1a 02 00 01>
 // EnumTest { c: [ 0, 1 ], a: 1, b: 0 }
 // { a: 1, b: 0, c: [ 0, 1 ] }
+// { a: 'B', b: 'A', c: [ 'A', 'B' ] }
