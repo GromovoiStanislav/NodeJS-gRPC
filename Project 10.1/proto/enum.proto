@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package test;
+
+enum Enum {
+  A = 0;
+  B = 1;
+}
+
+
+message EnumTest {
+    Enum a = 1;
+    Enum b = 2;
+    repeated Enum c = 3;
+  }
