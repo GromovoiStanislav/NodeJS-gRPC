@@ -1,0 +1,31 @@
+{
+  "nested": {
+    "test": {
+      "nested": {
+        "Enum": {
+          "values": {
+            "A": 0,
+            "B": 1
+          }
+        },
+        "EnumTest": {
+          "fields": {
+            "a": {
+              "type": "Enum",
+              "id": 1
+            },
+            "b": {
+              "type": "Enum",
+              "id": 2
+            },
+            "c": {
+              "rule": "repeated",
+              "type": "Enum",
+              "id": 3
+            }
+          }
+        }
+      }
+    }
+  }
+}
