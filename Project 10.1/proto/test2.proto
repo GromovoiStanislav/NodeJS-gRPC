@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package test;
+
+enum Type {
+  NONE = 0;
+  eGoods = 1;
+  eService = 2;
+}
+
+message OrderItem{
+  Type type = 1;
+}
