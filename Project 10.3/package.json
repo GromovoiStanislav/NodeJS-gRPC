@@ -4,12 +4,13 @@
   "description": "",
   "scripts": {
     "bundle-js": "pbjs -t static-module -w commonjs proto/employees.proto > src/employees.js",
-    "bundle-js2": "pbjs -t static-module -w commonjs -o src/awesome.js proto/awesome.proto",
-    "bundle-ts": "pbts -o src/employees.d.ts src/employees.js",
+    "bundle-js2": "pbjs -t static-module -w commonjs -o src/enum.js proto/enum.proto",
+    "bundle-ts": "pbts -o src/enum.d.ts src/enum.js",
     "build": "tsc",
     "example-1": "node ./build/example-1.js",
     "example-2": "node ./build/example-2.js",
-    "example-3": "node ./build/example-3.js"
+    "example-3": "node ./build/example-3.js",
+    "example-4": "node ./build/example-4.js"
   },
   "author": "",
   "license": "ISC",

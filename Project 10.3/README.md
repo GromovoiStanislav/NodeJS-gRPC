@@ -11,7 +11,7 @@ npm i protobufjs
 
 ```
 npm run bundle-js
-npm run bundle-json
+npm run bundle-ts
 ```
 
 #### Start:
@@ -20,4 +20,5 @@ npm run bundle-json
 npm run example-1
 npm run example-2
 npm run example-3
+npm run example-4
 ```
