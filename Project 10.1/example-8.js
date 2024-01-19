@@ -4,11 +4,6 @@ const protobuf = require('protobufjs');
 const root = protobuf.loadSync('proto/test2.proto');
 
 const msg = root.lookupType('OrderItem');
-//const msg = root.lookupType('test.Test');
-//const E = root.lookupTypeOrEnum('E');
-
-// Правильно
-//console.log(msg.decode(msg.encode(msg.fromObject({ field: 'B' })).finish())); // Test { field: 1 }
 
 const orderItem = msg.decode(
   msg.encode(msg.fromObject({ type: 'eService' })).finish()

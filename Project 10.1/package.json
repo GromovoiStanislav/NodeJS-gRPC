@@ -10,7 +10,8 @@
     "example-5": "node example-5.js",
     "example-6": "node example-6.js",
     "example-7": "node example-7.js",
-    "example-8": "node example-8.js"
+    "example-8": "node example-8.js",
+    "example-9": "node example-9.js"
   },
   "author": "",
   "license": "ISC",
