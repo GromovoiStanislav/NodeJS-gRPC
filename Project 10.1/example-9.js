@@ -19,9 +19,31 @@ const decodeTestMessage = async (buffer) => {
 };
 
 const testProtobuf = async () => {
+  // Заполнение поля timestamp с использованием текущей даты и времени
+  const currentTimestamp = new Date();
+  const seconds = Math.floor(currentTimestamp.getTime() / 1000);
+  const nanos = currentTimestamp.getMilliseconds() * 1000000;
+
+  // Создание объекта google.protobuf.Timestamp
+  const timestamp = {
+    seconds,
+    nanos,
+  };
+
+  //timestamp:
+  {
+    const seconds = timestamp.seconds; // Преобразование Long в обычное число
+    const nanos = timestamp.nanos;
+
+    const date = new Date(seconds * 1000 + nanos / 1000000); // Преобразование в миллисекунды
+
+    console.log('timestamp', date);
+  }
+
   const payload = {
-    timestamp: Math.round(new Date().getTime() / 1000), // таймстемп в секундах
+    //timestamp: Math.round(new Date().getTime() / 1000), // таймстемп в секундах
     //timestamp: new Date().getTime(), // таймстемп в миллисекундах не декодируется ????
+    timestamp,
     message: 'A rose by any other name would smell as sweet',
   };
   console.log('Test message:', payload);
@@ -34,17 +56,37 @@ const testProtobuf = async () => {
 
   const decodedMessage = await decodeTestMessage(buffer);
   console.log('Decoded test message:', decodedMessage);
+
+  //timestamp:
+  {
+    const timestamp = decodedMessage.timestamp;
+
+    const seconds = timestamp.seconds.toNumber(); // Преобразование Long в обычное число
+    const nanos = timestamp.nanos;
+
+    const date = new Date(seconds * 1000 + nanos / 1000000); // Преобразование в миллисекунды
+
+    console.log('timestamp', date);
+  }
 };
 
 testProtobuf();
 
 // Output:
+
+// timestamp 2024-01-20T04:39:33.586Z
 // Test message: {
-//   timestamp: 1705663203,
+//   timestamp: { seconds: 1705725573, nanos: 586000000 },
 //   message: 'A rose by any other name would smell as sweet'
 // }
-// Encoded message (53 bytes):  08e3b5a9ad06122d4120726f736520627920616e79206f74686572206e616d6520776f756c6420736d656c6c206173207377656574
+
+// Encoded message (61 bytes):  0a0c08859dadad061080cdb69702122d4120726f736520627920616e79206f74686572206e616d6520776f756c6420736d656c6c206173207377656574
+
 // Decoded test message: {
-//   timestamp: 1705663203,
+//   timestamp: {
+//     seconds: Long { low: 1705725573, high: 0, unsigned: false },
+//     nanos: 586000000
+//   },
 //   message: 'A rose by any other name would smell as sweet'
 // }
+// timestamp 2024-01-20T04:39:33.586Z
