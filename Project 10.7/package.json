@@ -5,7 +5,8 @@
   "scripts": {
     "example": "node example.js",
     "example-1": "node example-1.js",
-    "example-2": "node example-2.js"
+    "example-2": "node example-2.js",
+    "example-3": "node example-3.js"
   },
   "author": "",
   "license": "ISC",

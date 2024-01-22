@@ -2,6 +2,7 @@ const protobuf = require('protobufjs');
 const {
   Timestamp,
 } = require('google-protobuf/google/protobuf/timestamp_pb.js');
+const fs = require('node:fs');
 
 const encodeTestMessage = async (payload) => {
   const root = await protobuf.load('proto/test.proto');
@@ -19,6 +20,14 @@ const decodeTestMessage = async (buffer) => {
   }
   const message = testMessage.decode(buffer);
   return testMessage.toObject(message);
+};
+
+const writeFile = async (fileName, data) => {
+  try {
+    await fs.writeFile(fileName, data);
+  } catch (err) {
+    console.error('Error occurred while writing file:', err);
+  }
 };
 
 const testProtobuf = async () => {
@@ -54,6 +63,8 @@ const testProtobuf = async () => {
     `Encoded message (${buffer.length} bytes): `,
     buffer.toString('hex')
   );
+
+  await writeFile('from-nodejs.bin', buffer);
 
   const decodedMessage = await decodeTestMessage(buffer);
   console.log('Decoded test message:', decodedMessage);

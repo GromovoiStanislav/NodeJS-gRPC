@@ -4,13 +4,6 @@ const {
 } = require('google-protobuf/google/protobuf/timestamp_pb.js');
 const fs = require('node:fs/promises');
 
-const encodeTestMessage = async (payload) => {
-  const root = await protobuf.load('proto/test.proto');
-  const testMessage = root.lookupType('testpackage.testMessage');
-  const message = testMessage.create(payload);
-  return testMessage.encode(message).finish();
-};
-
 const decodeTestMessage = async (buffer) => {
   const root = await protobuf.load('proto/test.proto');
   const testMessage = root.lookupType('testpackage.testMessage');
@@ -22,38 +15,16 @@ const decodeTestMessage = async (buffer) => {
   return testMessage.toObject(message);
 };
 
-const writeFile = async (fileName, data) => {
+const readFile = async (fileName) => {
   try {
-    await fs.writeFile(fileName, data);
+    return await fs.readFile(fileName);
   } catch (err) {
-    console.error('Error occurred while writing file:', err);
+    console.error('Error occurred while reading file:', err);
   }
 };
 
 const testProtobuf = async () => {
-  // Заполнение поля timestamp с использованием текущей даты и времени
-  const currentTimestamp = new Date();
-  const seconds = Math.floor(currentTimestamp.getTime() / 1000);
-  const nanos = currentTimestamp.getMilliseconds() * 1000000;
-
-  //timestamp:
-  // Создание объекта google.protobuf.Timestamp
-  const timestamp = new Timestamp();
-  timestamp.fromDate(new Date());
-
-  const payload = {
-    createdAt: timestamp.toObject(),
-    message: 'A rose by any other name would smell as sweet',
-  };
-  console.log('Test message:', payload);
-
-  const buffer = await encodeTestMessage(payload);
-  console.log(
-    `Encoded message (${buffer.length} bytes): `,
-    buffer.toString('hex')
-  );
-
-  await writeFile('from-nodejs.bin', buffer);
+  const buffer = await readFile('from-golang.bin');
 
   const decodedMessage = await decodeTestMessage(buffer);
   console.log('Decoded test message:', decodedMessage);
@@ -91,3 +62,19 @@ const testProtobuf = async () => {
 };
 
 testProtobuf();
+
+//
+// Decoded test message: {
+//   createdAt: {
+//     seconds: Long { low: 1705921227, high: 0, unsigned: false },
+//     nanos: 109528700
+//   },
+//   message: 'Helo from Glang!!!'
+// }
+// timestamp {
+//   seconds: Long { low: 1705921227, high: 0, unsigned: false },
+//   nanos: 109528700
+// }
+// timestamp 2024-01-22T11:00:27.109Z
+// timestamp 2024-01-22T11:00:27.109Z
+// timestamp 2024-01-22T11:00:27.109Z
