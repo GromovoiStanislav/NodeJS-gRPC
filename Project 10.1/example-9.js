@@ -31,19 +31,19 @@ const testProtobuf = async () => {
   };
 
   //timestamp:
-  {
-    const seconds = timestamp.seconds; // Преобразование Long в обычное число
-    const nanos = timestamp.nanos;
+  // {
+  //   const seconds = timestamp.seconds; // Преобразование Long в обычное число
+  //   const nanos = timestamp.nanos;
 
-    const date = new Date(seconds * 1000 + nanos / 1000000); // Преобразование в миллисекунды
+  //   const date = new Date(seconds * 1000 + nanos / 1000000); // Преобразование в миллисекунды
 
-    console.log('timestamp', date);
-  }
+  //   console.log('timestamp', date);
+  // }
 
   const payload = {
     //timestamp: Math.round(new Date().getTime() / 1000), // таймстемп в секундах
-    //timestamp: new Date().getTime(), // таймстемп в миллисекундах не декодируется ????
-    timestamp,
+    timestamp: new Date().getTime(), // таймстемп в миллисекундах не декодируется ????
+    //timestamp,
     message: 'A rose by any other name would smell as sweet',
   };
   console.log('Test message:', payload);
@@ -58,15 +58,20 @@ const testProtobuf = async () => {
   console.log('Decoded test message:', decodedMessage);
 
   //timestamp:
+  // {
+  //   const timestamp = decodedMessage.timestamp;
+
+  //   const seconds = timestamp.seconds.toNumber(); // Преобразование Long в обычное число
+  //   const nanos = timestamp.nanos;
+
+  //   const date = new Date(seconds * 1000 + nanos / 1000000); // Преобразование в миллисекунды
+
+  //   console.log('timestamp', date);
+  // }
+
   {
     const timestamp = decodedMessage.timestamp;
-
-    const seconds = timestamp.seconds.toNumber(); // Преобразование Long в обычное число
-    const nanos = timestamp.nanos;
-
-    const date = new Date(seconds * 1000 + nanos / 1000000); // Преобразование в миллисекунды
-
-    console.log('timestamp', date);
+    console.log('timestamp', timestamp.toNumber());
   }
 };
 

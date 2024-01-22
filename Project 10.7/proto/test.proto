@@ -5,7 +5,7 @@ package testpackage;
 import "google/protobuf/timestamp.proto";
 
 message testMessage {
-    google.protobuf.Timestamp timestamp = 1;
+    google.protobuf.Timestamp createdAt = 1;
     string message = 2;
 }
 

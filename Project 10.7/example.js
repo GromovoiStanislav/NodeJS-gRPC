@@ -27,6 +27,10 @@ timestamp.setNanos(nanos);
   console.log(date);
 }
 
+const buf = timestamp.serializeBinary();
+console.log(buf);
+console.log(Timestamp.deserializeBinary(buf).toDate());
+
 console.log(timestamp.toDate());
 console.log(timestamp.toObject(false)); //{ seconds: 1705730237.643, nanos: 643000000 }
 

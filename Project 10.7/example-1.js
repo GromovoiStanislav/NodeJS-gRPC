@@ -1,14 +1,17 @@
 const protobuf = require('protobufjs');
+const {
+  Timestamp,
+} = require('google-protobuf/google/protobuf/timestamp_pb.js');
 
 const encodeTestMessage = async (payload) => {
-  const root = await protobuf.load('proto/test1.proto');
+  const root = await protobuf.load('proto/test.proto');
   const testMessage = root.lookupType('testpackage.testMessage');
   const message = testMessage.create(payload);
   return testMessage.encode(message).finish();
 };
 
 const decodeTestMessage = async (buffer) => {
-  const root = await protobuf.load('proto/test1.proto');
+  const root = await protobuf.load('proto/test.proto');
   const testMessage = root.lookupType('testpackage.testMessage');
   const err = testMessage.verify(buffer);
   if (err) {
@@ -41,9 +44,7 @@ const testProtobuf = async () => {
   }
 
   const payload = {
-    //timestamp: Math.round(new Date().getTime() / 1000), // таймстемп в секундах
-    //timestamp: new Date().getTime(), // таймстемп в миллисекундах не декодируется ????
-    timestamp,
+    createdAt: timestamp,
     message: 'A rose by any other name would smell as sweet',
   };
   console.log('Test message:', payload);
@@ -59,21 +60,32 @@ const testProtobuf = async () => {
 
   //timestamp:
   {
-    const timestamp = decodedMessage.timestamp;
+    const timestamp = decodedMessage.createdAt;
 
     const seconds = timestamp.seconds.toNumber(); // Преобразование Long в обычное число
     const nanos = timestamp.nanos;
 
     const date = new Date(seconds * 1000 + nanos / 1000000); // Преобразование в миллисекунды
 
-    console.log('timestamp', date);
+    console.log('timestamp', date); // timestamp 2024-01-20T04:39:33.586Z
   }
 
+  //timestamp:
   {
-    const timestamp = decodedMessage.timestamp;
+    const timestamp = decodedMessage.createdAt;
     const date = new Date(timestamp.seconds.toNumber() * 1000);
     date.setMilliseconds(timestamp.nanos / 1e6);
-    console.log('timestamp', date);
+    console.log('timestamp', date); // timestamp 2024-01-20T04:39:33.586Z
+  }
+
+  //timestamp:
+  {
+    //const timestamp = decodedMessage.createdAt;
+
+    const timestamp = new Timestamp();
+    timestamp.setSeconds(decodedMessage.createdAt.seconds);
+    timestamp.setNanos(decodedMessage.createdAt.nanos);
+    console.log('timestamp', timestamp.toDate()); // timestamp 2024-01-20T04:39:33.586Z
   }
 };
 
@@ -96,5 +108,6 @@ testProtobuf();
 //   },
 //   message: 'A rose by any other name would smell as sweet'
 // }
+// timestamp 2024-01-20T04:39:33.586Z
 // timestamp 2024-01-20T04:39:33.586Z
 // timestamp 2024-01-20T04:39:33.586Z

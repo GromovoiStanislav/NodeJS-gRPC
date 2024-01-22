@@ -2,10 +2,10 @@ syntax = "proto3";
 
 package testpackage;
 
-import "google/protobuf/timestamp.proto";
+//import "google/protobuf/timestamp.proto";
 
 message testMessage {
-    //uint32 timestamp = 1;
-    google.protobuf.Timestamp timestamp = 1;
+    uint64 timestamp = 1;
+    //google.protobuf.Timestamp timestamp = 1;
     string message = 2;
 }
